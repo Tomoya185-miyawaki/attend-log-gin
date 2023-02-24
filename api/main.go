@@ -1,7 +1,10 @@
 package main
 
-import "fmt"
+import (
+	db "github.com/Tomoya185-miyawaki/attend-log-gin/infrastructure"
+)
 
 func main() {
-	fmt.Println("test")
+	db := db.Init()
+	defer db.Close()
 }
