@@ -1,0 +1,36 @@
+version: '3'
+services:
+  api:
+    container_name: attend-log-gin-api
+    build: ./docker/api/go
+    tty: true
+    volumes:
+      - ./api:/var/www
+    ports:
+      - "3000:3000"
+      - "9000:9000"
+    depends_on:
+      db:
+        condition: service_started
+    tty: true
+  db:
+    container_name: attend-log-gin-db
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: attend_log
+      MYSQL_USER: attend_log
+      MYSQL_PASSWORD: root
+    tty: true
+  front:
+    container_name: attend-log-gin-front
+    build: ./docker/front/node
+    ports:
+      - 8000:8000
+    volumes:
+      - "./front:/var/www/html"
+    tty: true
