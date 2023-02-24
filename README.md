@@ -15,5 +15,5 @@ $ make init
 
 - フロント（Vue）側URL
   - http://localhost:8080
-- API（Laravel）側URL
+- API（Gin）側URL
   - http://localhost:3000
