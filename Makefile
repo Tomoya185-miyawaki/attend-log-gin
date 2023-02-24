@@ -31,3 +31,9 @@ front:
 .PHONY: db
 db:
 	$(DC) exec db bash -c 'mysql -u $$MYSQL_USER -p$$MYSQL_PASSWORD $$MYSQL_DATABASE'
+
+.PHONY: init
+init:
+	$(DC) up -d --build
+	$(DC) exec -T front sh -c 'cp .env.local .env'
+	$(DC) exec -T api bash -c 'go mod tidy'
