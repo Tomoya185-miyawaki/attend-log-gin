@@ -77,18 +77,17 @@ export default defineComponent({
         !passwordError.value?.length
       ) {
         isLoading.value = true
-        ApiService.getCsrfToken().then(() => {
-          ApiService.login({
-            email: email.value,
-            password: password.value
-          }).then(() => {
-            localStorage.setItem("adminAuth", "true")
-            isLoading.value = false
-            router.push({ name: 'employeeList' })
-          }).catch(() => {
-            isLoading.value = false
-            isError.value = true
-          })
+        ApiService.login({
+          email: email.value,
+          password: password.value
+        }).then(() => {
+          localStorage.setItem('adminAuth', 'true')
+          isLoading.value = false
+          router.push({ name: 'employeeList' })
+        }).catch(() => {
+          console.log("aa")
+          isLoading.value = false
+          isError.value = true
         })
       }
     }
