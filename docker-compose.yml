@@ -2,7 +2,9 @@ version: '3'
 services:
   api:
     container_name: attend-log-gin-api
-    build: ./docker/api/go
+    build:
+      context: .
+      dockerfile: ./docker/api/go/Dockerfile
     tty: true
     volumes:
       - ./api:/var/www
@@ -13,24 +15,38 @@ services:
       db:
         condition: service_started
     tty: true
-  db:
-    container_name: attend-log-gin-db
-    image: mysql:latest
-    ports:
-      - "3306:3306"
+
+  front:
+    container_name: attend-log-gin-front
+    build:
+      context: .
+      dockerfile: ./docker/front/node/Dockerfile
     volumes:
-      - ./data/db:/var/lib/mysql
+      - ./front:/var/www/html
+    ports:
+      - 8080:8080
+    command: |
+      sh -c
+      'npm install &&
+       npm run serve'
+    tty: true
+
+  db:
+    build:
+      context: .
+      dockerfile: ./docker/db/mysql/Dockerfile
+    container_name: attend-log-gin-db
+    ports:
+      - 3306:3306
     environment:
-      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: attend_log
       MYSQL_USER: attend_log
       MYSQL_PASSWORD: root
-    tty: true
-  front:
-    container_name: attend-log-gin-front
-    build: ./docker/front/node
-    ports:
-      - 8000:8000
+      MYSQL_ROOT_PASSWORD: root
+      TZ: 'Asia/Tokyo'
     volumes:
-      - "./front:/var/www/html"
+      - mysql-volume:/var/lib/mysql
     tty: true
+
+volumes:
+  mysql-volume:

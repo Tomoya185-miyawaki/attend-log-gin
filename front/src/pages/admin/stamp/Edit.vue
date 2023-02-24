@@ -14,7 +14,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import '@fullcalendar/core/vdom'
-import FullCalendar, { EventDropArg, EventChangeArg } from '@fullcalendar/vue3'
+import FullCalendar from '@fullcalendar/vue3'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import HeaderComponent from '@/components/layouts/HeaderComponent.vue'
@@ -45,14 +45,14 @@ export default defineComponent({
       nowIndicator: true,
       locale: 'ja',
       allDaySlot: false,
-      eventDrop: (info: EventChangeArg) => {
-        console.log("aa")
-        console.log(info.event._instance?.range.start)
-      },
-      eventResize: (info: EventDropArg) => {
-        // console.log("bb")
-        // console.log(info)
-      }
+      // eventDrop: (info: EventChangeArg) => {
+      //   console.log("aa")
+      //   console.log(info.event._instance?.range.start)
+      // },
+      // eventResize: (info: EventDropArg) => {
+      //   console.log("bb")
+      //   console.log(info)
+      // }
     }
 
     const getStampDetail = async (employeeId: string) => {
