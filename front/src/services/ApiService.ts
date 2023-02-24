@@ -13,11 +13,11 @@ class ApiService {
   }
 
   login(formData: LoginFormData): Promise<void> {
-    return http.post('/admin/login', formData)
+    return http.post('/api/admin/login', formData)
   }
 
   logout(): Promise<void> {
-    return http.post('/admin/logout')
+    return http.post('/api/admin/logout')
   }
 
   passwordReset(formData: LoginFormData): Promise<void> {
