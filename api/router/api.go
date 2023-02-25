@@ -28,6 +28,9 @@ func Bind() *gin.Engine {
 		route.POST("/admin/login", authCtrl.Login)
 		// ログインが必要なルーティング
 		route.Use(middleware.AdminLoginCheck())
+		{
+			route.POST("/admin/logout", authCtrl.Logout)
+		}
 	}
 	return router
 }

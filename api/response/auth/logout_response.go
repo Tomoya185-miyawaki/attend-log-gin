@@ -1,9 +1,9 @@
 /*
-レスポンスの型用のパッケージ（ログイン）
+レスポンスの型用のパッケージ（ログアウト）
 */
 package auth
 
-type LoginResponse struct {
+type LogoutResponse struct {
 	StatusCode int    `json:"status"`
 	Message    string `json:"message"`
 }
