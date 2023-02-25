@@ -26,6 +26,18 @@ var Employee = &dto.Employee{
 	HourlyWage: 1000,
 }
 
+var Employee2 = &dto.Employee{
+	ID:         2,
+	Name:       "従業員2",
+	HourlyWage: 1000,
+}
+
+var Employee3 = &dto.Employee{
+	ID:         3,
+	Name:       "従業員3",
+	HourlyWage: 1000,
+}
+
 // シーダーを実行
 func main() {
 	env := os.Getenv("ENV")
@@ -51,6 +63,8 @@ func main() {
 		// シーダーを実行
 		db.
 			Create(Admin).
-			Create(Employee)
+			Create(Employee).
+			Create(Employee2).
+			Create(Employee3)
 	}
 }
