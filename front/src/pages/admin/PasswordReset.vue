@@ -77,17 +77,15 @@ export default defineComponent({
         !passwordError.value?.length
       ) {
         isLoading.value = true
-        ApiService.getCsrfToken().then(() => {
-          ApiService.passwordReset({
-            email: email.value,
-            password: password.value
-          }).then(() => {
-            isLoading.value = false
-            router.push({ name: 'login' })
-          }).catch(() => {
-            isLoading.value = false
-            isError.value = true
-          })
+        ApiService.passwordReset({
+          email: email.value,
+          password: password.value
+        }).then(() => {
+          isLoading.value = false
+          router.push({ name: 'login' })
+        }).catch(() => {
+          isLoading.value = false
+          isError.value = true
         })
       }
     }

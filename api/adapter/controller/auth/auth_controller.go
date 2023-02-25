@@ -19,8 +19,14 @@ func (ac *AuthController) Login(c *gin.Context) {
 	var adminLoginUseCase usecase.AdminLoginUseCase
 	response := adminLoginUseCase.Exec(c, &request)
 	if response.StatusCode != http.StatusOK {
-		helper.Response(c, nil, response.Message, response.StatusCode)
+		helper.Response(c, nil, response, response.StatusCode)
 	} else {
-		helper.Response(c, response.Message, nil, response.StatusCode)
+		helper.Response(c, response, nil, response.StatusCode)
 	}
+}
+
+func (ac *AuthController) Logout(c *gin.Context) {
+	var adminLogoutUseCase usecase.AdminLogoutUseCase
+	response := adminLogoutUseCase.Exec(c)
+	helper.Response(c, response, nil, response.StatusCode)
 }
