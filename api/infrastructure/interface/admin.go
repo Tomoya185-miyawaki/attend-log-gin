@@ -10,4 +10,6 @@ import (
 type AdminInterface interface {
 	// メールアドレスを指定して、Adminユーザーを取得
 	FindByEmail(email string) (*dto.Admin, error)
+	// パスワードを更新する
+	UpdatePassword(admin *dto.Admin, password []byte) error
 }

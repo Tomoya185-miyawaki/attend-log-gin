@@ -9,6 +9,7 @@ import (
 
 	"github.com/Tomoya185-miyawaki/attend-log-gin/infrastructure/repository"
 	"github.com/Tomoya185-miyawaki/attend-log-gin/request/auth"
+	"github.com/Tomoya185-miyawaki/attend-log-gin/request/validation"
 	response "github.com/Tomoya185-miyawaki/attend-log-gin/response/auth"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -24,7 +25,7 @@ func (adminLoginUseCase *AdminLoginUseCase) Exec(
 ) *response.LoginResponse {
 	badRequestMessage := "リクエストが不正です"
 	// バリデーションチェック
-	isOk, err := validationCheck(c, request)
+	isOk, err := validation.ValidationCheck(c, request)
 	if !isOk {
 		log.Warn(err.Error())
 		return &response.LoginResponse{StatusCode: http.StatusBadRequest, Message: badRequestMessage}
@@ -52,15 +53,4 @@ func (adminLoginUseCase *AdminLoginUseCase) Exec(
 	session.Set("loginAdminUser", string(loginAdminUser))
 	session.Save()
 	return &response.LoginResponse{StatusCode: http.StatusOK, Message: "ログインに成功しました"}
-}
-
-func validationCheck(
-	c *gin.Context,
-	request *auth.LoginRequest,
-) (bool, error) {
-	// バリデーションチェック
-	if err := c.BindJSON(&request); err != nil {
-		return false, err
-	}
-	return true, nil
 }

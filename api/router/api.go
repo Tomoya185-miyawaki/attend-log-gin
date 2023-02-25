@@ -27,12 +27,13 @@ func Bind() *gin.Engine {
 		authCtrl := auth.AuthController{}
 		employeeCtrl := controller.EmployeeController{}
 		// ログイン不要なルーティング
-		route.POST("/admin/login", authCtrl.Login)
+		route.POST("/admin/login", authCtrl.Login)                  // ログイン
+		route.POST("/admin/password-reset", authCtrl.PasswordReset) // パスワードリセッt
 		// ログインが必要なルーティング
 		route.Use(middleware.AdminLoginCheck())
 		{
-			route.POST("/admin/logout", authCtrl.Logout)
-			route.GET("/employee", employeeCtrl.List)
+			route.POST("/admin/logout", authCtrl.Logout) // ログアウト
+			route.GET("/employee", employeeCtrl.List)    // 従業員一覧取得
 		}
 	}
 	return router
