@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/Tomoya185-miyawaki/attend-log-gin/helper"
 	"github.com/Tomoya185-miyawaki/attend-log-gin/infrastructure/repository"
 	"github.com/Tomoya185-miyawaki/attend-log-gin/request/auth"
 	response "github.com/Tomoya185-miyawaki/attend-log-gin/response/auth"
@@ -33,7 +32,6 @@ func (adminLoginUseCase *AdminLoginUseCase) Exec(
 	admin, err := repository.NewAdminRepository().FindByEmail(request.Email)
 	if err != nil {
 		log.Warn(err.Error())
-		helper.Response(c, nil, "リクエストが不正です", http.StatusBadRequest)
 		return &response.LoginResponse{StatusCode: http.StatusBadRequest, Message: badRequestMessage}
 	}
 	// リクエストパラメータのPasswordが正しいかどうか

@@ -13,6 +13,8 @@ require (
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 )
 
+require github.com/koron/go-dproxy v1.3.0
+
 require (
 	github.com/gin-contrib/sessions v0.0.5
 	github.com/gorilla/context v1.1.1 // indirect
