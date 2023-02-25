@@ -70,17 +70,11 @@ const router = createRouter({
 })
 
 router.beforeEach((to, _, next) => {
-  if (to.matched.some(record => record.meta.adminAuthOnly)) {
-    if (!isAdminLoggedIn()) {
-      return next('/admin/login')
-    }
-    return next()
+  if (to.matched.some(record => record.meta.adminAuthOnly) && !isAdminLoggedIn()) {
+    return next('/admin/login')
   }
-  if (to.matched.some(record => record.meta.adminGuestOnly)) {
-    if (isAdminLoggedIn()) {
-      return next('/admin')
-    }
-    return next()
+  if (to.matched.some(record => record.meta.adminGuestOnly) && isAdminLoggedIn()) {
+    return next('/admin')
   }
   return next()
 })
