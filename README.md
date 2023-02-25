@@ -13,7 +13,9 @@ $ cd attend-log-gin
 $ make init
 ```
 
-- フロント（Vue）側URL
+- フロント（Vue）URL
   - http://localhost:8080
-- API（Gin）側URL
+- API（Gin）URL
   - http://localhost:3000
+- API（godoc）
+  - http://localhost:9000/pkg/github.com/Tomoya185-miyawaki/attend-log-gin/

@@ -32,6 +32,10 @@ front:
 db:
 	$(DC) exec db bash -c 'mysql -u $$MYSQL_USER -p$$MYSQL_PASSWORD $$MYSQL_DATABASE'
 
+.PHONY: seed
+seed:
+	$(DC) exec api go run infrastructure/seed/seed.go
+
 .PHONY: init
 init:
 	$(DC) up -d --build

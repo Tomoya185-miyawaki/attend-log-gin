@@ -4,6 +4,7 @@
 package router
 
 import (
+	"github.com/Tomoya185-miyawaki/attend-log-gin/adapter/controller"
 	"github.com/Tomoya185-miyawaki/attend-log-gin/adapter/controller/auth"
 	"github.com/Tomoya185-miyawaki/attend-log-gin/helper"
 	"github.com/Tomoya185-miyawaki/attend-log-gin/middleware"
@@ -23,13 +24,15 @@ func Bind() *gin.Engine {
 	// ルーティング
 	route := router.Group("/api")
 	{
-		// ログイン不要なルーティング
 		authCtrl := auth.AuthController{}
+		employeeCtrl := controller.EmployeeController{}
+		// ログイン不要なルーティング
 		route.POST("/admin/login", authCtrl.Login)
 		// ログインが必要なルーティング
 		route.Use(middleware.AdminLoginCheck())
 		{
 			route.POST("/admin/logout", authCtrl.Logout)
+			route.GET("/employee", employeeCtrl.List)
 		}
 	}
 	return router

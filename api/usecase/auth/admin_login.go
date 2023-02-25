@@ -24,8 +24,9 @@ func (adminLoginUseCase *AdminLoginUseCase) Exec(
 ) *response.LoginResponse {
 	badRequestMessage := "リクエストが不正です"
 	// バリデーションチェック
-	isOk := validationCheck(c, request)
+	isOk, err := validationCheck(c, request)
 	if !isOk {
+		log.Warn(err.Error())
 		return &response.LoginResponse{StatusCode: http.StatusBadRequest, Message: badRequestMessage}
 	}
 	// リクエストパラメータのEmailに紐づくユーザーが存在するかどうか
@@ -56,11 +57,10 @@ func (adminLoginUseCase *AdminLoginUseCase) Exec(
 func validationCheck(
 	c *gin.Context,
 	request *auth.LoginRequest,
-) bool {
+) (bool, error) {
 	// バリデーションチェック
 	if err := c.BindJSON(&request); err != nil {
-		log.Warn(err.Error())
-		return false
+		return false, err
 	}
-	return true
+	return true, nil
 }

@@ -8,7 +8,6 @@ import (
 	"os"
 
 	"github.com/Tomoya185-miyawaki/attend-log-gin/infrastructure/dto"
-	"github.com/Tomoya185-miyawaki/attend-log-gin/infrastructure/seed"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/joho/godotenv"
@@ -35,10 +34,6 @@ func Init() *gorm.DB {
 
 	// マイグレーション
 	autoMigrate()
-	if env != "production" {
-		// シーダーを実行
-		execSeeds()
-	}
 
 	return db
 }
@@ -50,10 +45,6 @@ func GetDB() *gorm.DB {
 // マイグレーション
 func autoMigrate() {
 	db.
-		AutoMigrate(&dto.Admin{})
-}
-
-func execSeeds() {
-	db.
-		Create(seed.Admin)
+		AutoMigrate(&dto.Admin{}).
+		AutoMigrate(&dto.Employee{})
 }
