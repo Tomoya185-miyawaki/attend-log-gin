@@ -8,10 +8,6 @@ import {
 } from '@/types/api/response'
 
 class ApiService {
-  getCsrfToken(): Promise<void> {
-    return http.get('/sanctum/csrf-cookie')
-  }
-
   login(formData: LoginFormData): Promise<void> {
     return http.post('/api/admin/login', formData)
   }
