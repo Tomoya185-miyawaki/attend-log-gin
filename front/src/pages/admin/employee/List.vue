@@ -50,7 +50,6 @@ import { Employee } from '@/types/model'
 import HeaderComponent from '@/components/layouts/HeaderComponent.vue'
 import LoadingComponent from '@/components/parts/LoadingComponent.vue'
 import ApiService from '@/services/ApiService'
-import { failedApiAfterLogout } from '@/util/auth'
 import router from '@/routes/router'
 
 export default defineComponent({
@@ -75,9 +74,8 @@ export default defineComponent({
           currentPage.value = res.currentPage
           lastPage.value = res.lastPage
         })
-        .catch(err => {
+        .catch(() => {
           isLoading.value = false
-          failedApiAfterLogout(err.response.status)
         })
     }
     getEmployees(currentPage.value)

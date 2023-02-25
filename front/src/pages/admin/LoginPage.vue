@@ -81,11 +81,9 @@ export default defineComponent({
           email: email.value,
           password: password.value
         }).then(() => {
-          localStorage.setItem('adminAuth', 'true')
           isLoading.value = false
           router.push({ name: 'employeeList' })
         }).catch(() => {
-          console.log("aa")
           isLoading.value = false
           isError.value = true
         })
