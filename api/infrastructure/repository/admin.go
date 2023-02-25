@@ -26,3 +26,12 @@ func (ar *adminRepository) FindByEmail(email string) (*dto.Admin, error) {
 	}
 	return admin, nil
 }
+
+func (ar *adminRepository) UpdatePassword(admin *dto.Admin, password []byte) error {
+	db := db.GetDB()
+
+	if err := db.Model(admin).Update("password", password).Error; err != nil {
+		return errors.New("パスワードの更新に失敗しました")
+	}
+	return nil
+}

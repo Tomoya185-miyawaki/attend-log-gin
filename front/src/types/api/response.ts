@@ -1,6 +1,21 @@
 import { Employee } from "@/types/model"
 import { StampDetail, StampList } from "@/types/stamp"
 
+export type LoginResponse = {
+  status: number
+  message: string
+}
+
+export type LogoutResponse = {
+  status: number
+  message: string
+}
+
+export type PasswordResetResponse = {
+  status: number
+  message: string
+}
+
 export type GetEmployeesByIdRes = {
   employee: Employee
 }

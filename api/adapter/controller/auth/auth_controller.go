@@ -30,3 +30,10 @@ func (ac *AuthController) Logout(c *gin.Context) {
 	response := adminLogoutUseCase.Exec(c)
 	helper.Response(c, response, nil, response.StatusCode)
 }
+
+func (ac *AuthController) PasswordReset(c *gin.Context) {
+	var request auth.PasswordResetRequest
+	var adminPasswordResetUseCase usecase.AdminPasswordResetUseCase
+	response := adminPasswordResetUseCase.Exec(c, &request)
+	helper.Response(c, response, nil, response.StatusCode)
+}

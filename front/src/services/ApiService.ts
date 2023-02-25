@@ -1,6 +1,9 @@
 import http from '@/util/http'
-import { LoginFormData, EmployeeFormData } from '@/types/auth'
+import { LoginFormData, PasswordResetFormData, EmployeeFormData } from '@/types/auth'
 import {
+  LoginResponse,
+  LogoutResponse,
+  PasswordResetResponse,
   GetEmployeesByIdRes,
   GetEmployeesByPaginateRes,
   GetStampsByPaginateRes,
@@ -8,20 +11,20 @@ import {
 } from '@/types/api/response'
 
 class ApiService {
-  login(formData: LoginFormData): Promise<void> {
+  login(formData: LoginFormData): Promise<LoginResponse> {
     return http.post('/api/admin/login', formData)
   }
 
-  logout(): Promise<void> {
+  logout(): Promise<LogoutResponse> {
     return http.post('/api/admin/logout')
   }
 
-  passwordReset(formData: LoginFormData): Promise<void> {
+  passwordReset(formData: PasswordResetFormData): Promise<PasswordResetResponse> {
     return http.post('/api/admin/password-reset', formData)
   }
 
   async getEmployeesById(employeeId: string): Promise<GetEmployeesByIdRes> {
-    const response = await http.get('/api/employee/' + employeeId)
+    const response = await http.get(`/api/employee/${employeeId}`)
     return response.data
   }
 
