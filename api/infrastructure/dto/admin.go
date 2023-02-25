@@ -3,7 +3,9 @@ AdminユーザーのDTO
 */
 package dto
 
-import "time"
+import (
+	"time"
+)
 
 type Admin struct {
 	ID        uint      `gorm:"primary_key"`
