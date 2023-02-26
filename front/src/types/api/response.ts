@@ -26,6 +26,11 @@ export type GetEmployeesByPaginateRes = {
   lastPage: number
 }
 
+export type CreateEmployeeRes = {
+  status: number
+  message: string
+}
+
 export type GetStampsByPaginateRes = {
   currentPage: number
   stamps: StampList[]
