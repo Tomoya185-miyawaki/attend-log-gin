@@ -1,3 +1,6 @@
+/*
+従業員一覧用のユースケース
+*/
 package employee
 
 import (

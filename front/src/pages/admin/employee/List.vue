@@ -14,6 +14,9 @@
         <thead>
           <tr>
             <th class="text-left">
+              社員番号
+            </th>
+            <th class="text-left">
               従業員名
             </th>
             <th class="text-left">
@@ -28,6 +31,7 @@
             class="table-row"
             @click="moveEmployeeEditPage(employee.id)"
           >
+            <td>{{ employee.id }}</td>
             <td>{{ employee.name }}</td>
             <td>{{ employee.hourly_wage }}円</td>
           </tr>

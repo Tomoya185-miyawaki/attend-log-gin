@@ -5,11 +5,11 @@ package repository
 
 import (
 	"errors"
-	"fmt"
 
 	db "github.com/Tomoya185-miyawaki/attend-log-gin/infrastructure"
 	"github.com/Tomoya185-miyawaki/attend-log-gin/infrastructure/dto"
 	IDENT "github.com/Tomoya185-miyawaki/attend-log-gin/infrastructure/interface"
+	"github.com/Tomoya185-miyawaki/attend-log-gin/request/employee"
 )
 
 type employeeRepository struct{}
@@ -27,9 +27,18 @@ func (er *employeeRepository) FetchEmployees(
 	employees := &dto.Employees{}
 
 	total := db.Find(&employees).RowsAffected
-	fmt.Println(limit, offset)
 	if err := db.Limit(limit).Offset(offset).Find(employees).Error; err != nil {
 		return nil, errors.New("従業員を取得できませんでした"), total
 	}
 	return employees, nil, total
+}
+
+func (er *employeeRepository) Create(request *employee.EmployeeCreateRequest, hourlyWage uint) error {
+	db := db.GetDB()
+	employee := &dto.Employee{Name: request.Name, HourlyWage: hourlyWage}
+
+	if err := db.Create(&employee).Error; err != nil {
+		return errors.New("従業員を取得できませんでした")
+	}
+	return nil
 }

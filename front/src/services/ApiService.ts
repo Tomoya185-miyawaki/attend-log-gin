@@ -6,6 +6,7 @@ import {
   PasswordResetResponse,
   GetEmployeesByIdRes,
   GetEmployeesByPaginateRes,
+  CreateEmployeeRes,
   GetStampsByPaginateRes,
   GetStampDetailRes
 } from '@/types/api/response'
@@ -33,7 +34,7 @@ class ApiService {
     return response.data
   }
 
-  createEmployee(formData: EmployeeFormData): Promise<void> {
+  createEmployee(formData: EmployeeFormData): Promise<CreateEmployeeRes> {
     return http.post('/api/employee/create', formData)
   }
 

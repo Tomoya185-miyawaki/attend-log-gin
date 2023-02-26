@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/Tomoya185-miyawaki/attend-log-gin/helper"
+	"github.com/Tomoya185-miyawaki/attend-log-gin/request/employee"
 	usecase "github.com/Tomoya185-miyawaki/attend-log-gin/usecase/employee"
 	"github.com/gin-gonic/gin"
 )
@@ -17,5 +18,16 @@ func (ec *EmployeeController) List(c *gin.Context) {
 		helper.Response(c, nil, response, http.StatusBadRequest)
 	} else {
 		helper.Response(c, response, nil, http.StatusOK)
+	}
+}
+
+func (ec *EmployeeController) Create(c *gin.Context) {
+	var request employee.EmployeeCreateRequest
+	var employeeCreateUseCase usecase.EmployeeCreateUseCase
+	response := employeeCreateUseCase.Exec(c, &request)
+	if response.StatusCode != http.StatusOK {
+		helper.Response(c, nil, response, response.StatusCode)
+	} else {
+		helper.Response(c, response, nil, response.StatusCode)
 	}
 }
