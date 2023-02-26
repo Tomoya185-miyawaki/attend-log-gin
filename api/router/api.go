@@ -32,8 +32,9 @@ func Bind() *gin.Engine {
 		// ログインが必要なルーティング
 		route.Use(middleware.AdminLoginCheck())
 		{
-			route.POST("/admin/logout", authCtrl.Logout) // ログアウト
-			route.GET("/employee", employeeCtrl.List)    // 従業員一覧取得
+			route.POST("/admin/logout", authCtrl.Logout)        // ログアウト
+			route.GET("/employee", employeeCtrl.List)           // 従業員一覧取得
+			route.POST("/employee/create", employeeCtrl.Create) // 従業員作成取得
 		}
 	}
 	return router
