@@ -19,6 +19,14 @@ type Employee struct {
 
 type Employees []Employee
 
+func (employee Employee) ConvertToModel() *entity.Employee {
+	return &entity.Employee{
+		ID:         entity.ID(employee.ID),
+		Name:       entity.Name(employee.Name),
+		HourlyWage: entity.HourlyWage(employee.HourlyWage),
+	}
+}
+
 func (employees Employees) ConvertToModel() *entity.Employees {
 	result := make(entity.Employees, len(employees))
 

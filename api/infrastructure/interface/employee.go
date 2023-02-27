@@ -11,6 +11,8 @@ import (
 type EmployeeInterface interface {
 	// 従業員を取得する（ページネーションあり）
 	FetchEmployees(page int, limit int, offset int) (*dto.Employees, error, int64)
+	// IDをキーにして、従業員を取得する
+	FetchEmployeeById(id string) (*dto.Employee, error)
 	// 従業員を作成する
 	Create(request *employee.EmployeeCreateRequest, hourlyWage uint) error
 }

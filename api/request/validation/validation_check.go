@@ -4,12 +4,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ValidationCheck(
+func ValidationJsonCheck(
 	c *gin.Context,
 	request interface{},
-) (bool, error) {
+) error {
 	if err := c.BindJSON(&request); err != nil {
-		return false, err
+		return err
 	}
-	return true, nil
+	return nil
 }

@@ -23,8 +23,7 @@ func (adminPasswordResetUseCase *AdminPasswordResetUseCase) Exec(
 ) *response.PasswordResetResponse {
 	badRequestMessage := "リクエストが不正です"
 	// バリデーションチェック
-	isOk, err := validation.ValidationCheck(c, request)
-	if !isOk {
+	if err := validation.ValidationJsonCheck(c, request); err != nil {
 		log.Warn(err.Error())
 		return &response.PasswordResetResponse{StatusCode: http.StatusBadRequest, Message: badRequestMessage}
 	}
