@@ -25,8 +25,7 @@ func (adminLoginUseCase *AdminLoginUseCase) Exec(
 ) *response.LoginResponse {
 	badRequestMessage := "リクエストが不正です"
 	// バリデーションチェック
-	isOk, err := validation.ValidationCheck(c, request)
-	if !isOk {
+	if err := validation.ValidationJsonCheck(c, request); err != nil {
 		log.Warn(err.Error())
 		return &response.LoginResponse{StatusCode: http.StatusBadRequest, Message: badRequestMessage}
 	}

@@ -22,8 +22,7 @@ func (employeeCreateUseCase *EmployeeCreateUseCase) Exec(
 	request *employee.EmployeeCreateRequest,
 ) *response.CreateEmployeeResponse {
 	// バリデーションチェック
-	isOk, err := validation.ValidationCheck(c, request)
-	if !isOk {
+	if err := validation.ValidationJsonCheck(c, request); err != nil {
 		log.Warn(err.Error())
 		return &response.CreateEmployeeResponse{StatusCode: http.StatusBadRequest, Message: "リクエストが不正です"}
 	}

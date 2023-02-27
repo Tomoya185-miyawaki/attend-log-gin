@@ -33,6 +33,18 @@ func (er *employeeRepository) FetchEmployees(
 	return employees, nil, total
 }
 
+func (er *employeeRepository) FetchEmployeeById(
+	id string,
+) (*dto.Employee, error) {
+	db := db.GetDB()
+	employee := &dto.Employee{}
+
+	if err := db.First(&employee, id).Error; err != nil {
+		return nil, errors.New("従業員を取得できませんでした")
+	}
+	return employee, nil
+}
+
 func (er *employeeRepository) Create(request *employee.EmployeeCreateRequest, hourlyWage uint) error {
 	db := db.GetDB()
 	employee := &dto.Employee{Name: request.Name, HourlyWage: hourlyWage}

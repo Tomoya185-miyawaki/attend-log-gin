@@ -21,6 +21,16 @@ func (ec *EmployeeController) List(c *gin.Context) {
 	}
 }
 
+func (ec *EmployeeController) Show(c *gin.Context) {
+	var employeeShowUseCase usecase.EmployeeShowUseCase
+	response, isSuccess := employeeShowUseCase.Exec(c)
+	if !isSuccess {
+		helper.Response(c, nil, response, http.StatusBadRequest)
+	} else {
+		helper.Response(c, response, nil, http.StatusOK)
+	}
+}
+
 func (ec *EmployeeController) Create(c *gin.Context) {
 	var request employee.EmployeeCreateRequest
 	var employeeCreateUseCase usecase.EmployeeCreateUseCase
