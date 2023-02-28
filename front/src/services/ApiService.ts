@@ -7,6 +7,7 @@ import {
   GetEmployeesByIdRes,
   GetEmployeesByPaginateRes,
   CreateEmployeeRes,
+  UpdateEmployeeRes,
   GetStampsByPaginateRes,
   GetStampDetailRes
 } from '@/types/api/response'
@@ -38,7 +39,7 @@ class ApiService {
     return http.post('/api/employee/create', formData)
   }
 
-  updateEmployee(formData: EmployeeFormData, id: string): Promise<void> {
+  updateEmployee(formData: EmployeeFormData, id: string): Promise<UpdateEmployeeRes> {
     return http.patch(`/api/employee/${id}`, formData)
   }
 

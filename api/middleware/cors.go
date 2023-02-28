@@ -20,6 +20,8 @@ func NewCorsConfig() gin.HandlerFunc {
 		AllowMethods: []string{
 			"GET",
 			"POST",
+			"PATCH",
+			"DELETE",
 			"OPTIONS",
 		},
 		// cookieなどの情報を必要とするかどうか

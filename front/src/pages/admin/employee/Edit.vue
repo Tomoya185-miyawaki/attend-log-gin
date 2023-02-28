@@ -96,7 +96,7 @@ export default defineComponent({
         isLoading.value = true
         ApiService.updateEmployee({
             name: name.value,
-            hourlyWage: hourlyWage.value
+            hourlyWage: String(hourlyWage.value)
           }, employeeId)
           .then(() => {
             isLoading.value = false

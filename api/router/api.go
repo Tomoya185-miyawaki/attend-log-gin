@@ -36,6 +36,7 @@ func Bind() *gin.Engine {
 			route.GET("/employee", employeeCtrl.List)           // 従業員一覧取得
 			route.GET("/employee/:id", employeeCtrl.Show)       // 従業員詳細取得
 			route.POST("/employee/create", employeeCtrl.Create) // 従業員作成取得
+			route.PATCH("/employee/:id", employeeCtrl.Update)   // 従業員更新取得
 		}
 	}
 	return router

@@ -75,7 +75,7 @@ export default defineComponent({
         isLoading.value = true
         ApiService.createEmployee({
             name: name.value,
-            hourlyWage: hourlyWage.value
+            hourlyWage: String(hourlyWage.value)
           }).then(() => {
             isLoading.value = false
             router.push({ name: 'employeeList' })

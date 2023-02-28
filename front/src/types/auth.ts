@@ -10,5 +10,5 @@ export type LoginFormData = {
 
 export type EmployeeFormData = {
   name: string
-  hourlyWage: number
+  hourlyWage: string
 }

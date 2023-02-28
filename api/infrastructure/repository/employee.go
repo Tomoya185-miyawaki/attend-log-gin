@@ -54,3 +54,24 @@ func (er *employeeRepository) Create(request *employee.EmployeeCreateRequest, ho
 	}
 	return nil
 }
+
+func (er *employeeRepository) Update(
+	id string,
+	name string,
+	hourlyWage uint,
+) error {
+	db := db.GetDB()
+	employee := &dto.Employee{Name: name, HourlyWage: hourlyWage}
+
+	if err := db.First(&employee, id).Error; err != nil {
+		return errors.New("更新対象の従業員を取得できませんでした")
+	}
+
+	employee.Name = name
+	employee.HourlyWage = hourlyWage
+
+	if err := db.Save(&employee).Error; err != nil {
+		return errors.New("従業員を更新できませんでした")
+	}
+	return nil
+}
