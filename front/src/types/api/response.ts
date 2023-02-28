@@ -36,6 +36,11 @@ export type UpdateEmployeeRes = {
   message: string
 }
 
+export type DeleteEmployeeRes = {
+  status: number
+  message: string
+}
+
 export type GetStampsByPaginateRes = {
   currentPage: number
   stamps: StampList[]

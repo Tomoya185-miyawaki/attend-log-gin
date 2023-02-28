@@ -8,6 +8,7 @@ import {
   GetEmployeesByPaginateRes,
   CreateEmployeeRes,
   UpdateEmployeeRes,
+  DeleteEmployeeRes,
   GetStampsByPaginateRes,
   GetStampDetailRes
 } from '@/types/api/response'
@@ -43,7 +44,7 @@ class ApiService {
     return http.patch(`/api/employee/${id}`, formData)
   }
 
-  deleteEmployee(id: string): Promise<void> {
+  deleteEmployee(id: string): Promise<DeleteEmployeeRes> {
     return http.delete(`/api/employee/${id}`)
   }
 

@@ -52,3 +52,13 @@ func (ec *EmployeeController) Update(c *gin.Context) {
 		helper.Response(c, response, nil, response.StatusCode)
 	}
 }
+
+func (ec *EmployeeController) Delete(c *gin.Context) {
+	var employeeDeleteUseCase usecase.EmployeeDeleteUseCase
+	response := employeeDeleteUseCase.Exec(c)
+	if response.StatusCode != http.StatusOK {
+		helper.Response(c, nil, response, response.StatusCode)
+	} else {
+		helper.Response(c, response, nil, response.StatusCode)
+	}
+}
