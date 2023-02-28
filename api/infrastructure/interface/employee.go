@@ -17,4 +17,6 @@ type EmployeeInterface interface {
 	Create(request *employee.EmployeeCreateRequest, hourlyWage uint) error
 	// 従業員を更新する
 	Update(id string, name string, hourlyWage uint) error
+	// 従業員を削除する
+	Delete(id string) error
 }

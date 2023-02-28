@@ -75,3 +75,13 @@ func (er *employeeRepository) Update(
 	}
 	return nil
 }
+
+func (er *employeeRepository) Delete(id string) error {
+	db := db.GetDB()
+	employee := &dto.Employee{}
+
+	if err := db.Delete(&employee, id).Error; err != nil {
+		return errors.New("従業員の削除に失敗しました")
+	}
+	return nil
+}
