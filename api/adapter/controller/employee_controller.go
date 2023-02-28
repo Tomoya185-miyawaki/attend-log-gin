@@ -41,3 +41,14 @@ func (ec *EmployeeController) Create(c *gin.Context) {
 		helper.Response(c, response, nil, response.StatusCode)
 	}
 }
+
+func (ec *EmployeeController) Update(c *gin.Context) {
+	var request employee.EmployeeUpdateRequest
+	var employeeUpdateUseCase usecase.EmployeeUpdateUseCase
+	response := employeeUpdateUseCase.Exec(c, &request)
+	if response.StatusCode != http.StatusOK {
+		helper.Response(c, nil, response, response.StatusCode)
+	} else {
+		helper.Response(c, response, nil, response.StatusCode)
+	}
+}
