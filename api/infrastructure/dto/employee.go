@@ -6,7 +6,7 @@ package dto
 import (
 	"time"
 
-	"github.com/Tomoya185-miyawaki/attend-log-gin/entity"
+	entity "github.com/Tomoya185-miyawaki/attend-log-gin/entity/employee"
 )
 
 type Employee struct {
@@ -15,6 +15,7 @@ type Employee struct {
 	HourlyWage uint      `gorm:"not null"`
 	CreateAt   time.Time `gorm:"default:current_timestamp"`
 	UpdatedAt  time.Time `gorm:"default:current_timestamp"`
+	DeletedAt  time.Time `gorm:"default:null"`
 }
 
 type Employees []Employee

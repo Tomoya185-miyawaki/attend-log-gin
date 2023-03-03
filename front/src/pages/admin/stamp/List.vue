@@ -78,7 +78,6 @@ export default defineComponent({
 
     const getStamps = async (today: string, page: number) => {
       isLoading.value = true
-      console.log
       await ApiService
         .getStampsByPaginate(today, page)
         .then(res => {

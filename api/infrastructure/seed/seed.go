@@ -6,7 +6,9 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 
+	"github.com/Tomoya185-miyawaki/attend-log-gin/helper"
 	"github.com/Tomoya185-miyawaki/attend-log-gin/infrastructure/dto"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -38,6 +40,22 @@ var Employee3 = &dto.Employee{
 	HourlyWage: 1000,
 }
 
+var Stamp1 = &dto.Stamp{
+	ID:             1,
+	EmployeeID:     1,
+	Status:         1,
+	StampStartDate: time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.Local),
+	StampEndDate:   time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 9, 0, 0, 0, time.Local),
+}
+
+var Stamp2 = &dto.Stamp{
+	ID:             2,
+	EmployeeID:     1,
+	Status:         2,
+	StampStartDate: time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 3, 0, 0, 0, time.Local),
+	StampEndDate:   time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 4, 0, 0, 0, time.Local),
+}
+
 // シーダーを実行
 func main() {
 	env := os.Getenv("ENV")
@@ -46,6 +64,9 @@ func main() {
 	}
 	godotenv.Load(".env." + env)
 	godotenv.Load()
+
+	// タイムゾーンの設定
+	helper.SetLocation("Asia/Tokyo")
 
 	db, err := gorm.Open("mysql", os.Getenv("DB_CONNECT"))
 	if err != nil {
@@ -56,15 +77,19 @@ func main() {
 		// マイグレーション
 		db.
 			DropTable(&dto.Admin{}).
-			DropTable(&dto.Employee{})
+			DropTable(&dto.Employee{}).
+			DropTable(&dto.Stamp{})
 		db.
 			AutoMigrate(&dto.Admin{}).
-			AutoMigrate(&dto.Employee{})
+			AutoMigrate(&dto.Employee{}).
+			AutoMigrate(&dto.Stamp{})
 		// シーダーを実行
 		db.
 			Create(Admin).
 			Create(Employee).
 			Create(Employee2).
-			Create(Employee3)
+			Create(Employee3).
+			Create(Stamp1).
+			Create(Stamp2)
 	}
 }

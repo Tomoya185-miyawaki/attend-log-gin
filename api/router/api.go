@@ -15,6 +15,8 @@ import (
 func Bind() *gin.Engine {
 	// ログの設定
 	helper.SetUpLog()
+	// タイムゾーンの設定
+	helper.SetLocation("Asia/Tokyo")
 	// ルーティングの初期化
 	router := gin.Default()
 	// corsの設定
@@ -26,6 +28,7 @@ func Bind() *gin.Engine {
 	{
 		authCtrl := auth.AuthController{}
 		employeeCtrl := controller.EmployeeController{}
+		stampCtrl := controller.StampController{}
 		// ログイン不要なルーティング
 		route.POST("/admin/login", authCtrl.Login)                  // ログイン
 		route.POST("/admin/password-reset", authCtrl.PasswordReset) // パスワードリセッt
@@ -38,6 +41,7 @@ func Bind() *gin.Engine {
 			route.POST("/employee/create", employeeCtrl.Create) // 従業員作成取得
 			route.PATCH("/employee/:id", employeeCtrl.Update)   // 従業員更新取得
 			route.DELETE("/employee/:id", employeeCtrl.Delete)  // 従業員削除取得
+			route.GET("/stamp", stampCtrl.List)                 // 出退勤一覧取得
 		}
 	}
 	return router

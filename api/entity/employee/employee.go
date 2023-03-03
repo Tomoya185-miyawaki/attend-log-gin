@@ -1,7 +1,7 @@
 /*
 エンティティ（従業員）
 */
-package entity
+package employee
 
 type ID uint
 type Name string
