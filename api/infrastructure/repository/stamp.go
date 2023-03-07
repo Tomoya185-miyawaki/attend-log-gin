@@ -18,17 +18,27 @@ func NewStampRepository() IDENT.StampInterface {
 	return &stampRepository{}
 }
 
-func (sr *stampRepository) FetchStamps() (*dto.Stamps, error) {
+func (sr *stampRepository) FetchStamps(today string) (*dto.Stamps, error) {
 	db := db.GetDB()
-	// stamp := &dto.Stamp{}
 	stamps := &dto.Stamps{}
 
-	if err := db.Find(&stamps).Error; err != nil {
-		log.Warn("aaa")
+	if err := db.Where("stamp_start_date like ?", "%"+today+"%").Find(&stamps).Error; err != nil {
 		log.Warn(err.Error())
 		return nil, errors.New("出退勤が取得できませんでした")
 	}
-	log.Warn("bb")
-	log.Warn(*stamps)
 	return stamps, nil
+}
+
+func (sr *stampRepository) FetchCount(today string) (*dto.StampCount, error) {
+	db := db.GetDB()
+	stampCount := &dto.StampCount{}
+
+	if err := db.Table("stamps").Select("distinct employee_id as cnt").Where("status = ?", dto.Attend).Where("stamp_start_date like ?", "%"+today+"%").Scan(&stampCount).Error; err != nil {
+		if stampCount.Cnt == 0 {
+			return stampCount, nil
+		}
+		log.Warn(err.Error())
+		return nil, errors.New("出退勤カウントが取得できませんでした")
+	}
+	return stampCount, nil
 }

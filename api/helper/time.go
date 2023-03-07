@@ -10,6 +10,7 @@ import (
 )
 
 var layout = "2006-01-02 15:04:05"
+var layoutDuration = "15:04"
 
 func SetLocation(timezone string) {
 	zone, err := time.LoadLocation(timezone)
@@ -21,4 +22,8 @@ func SetLocation(timezone string) {
 
 func TimeToString(t time.Time) string {
 	return t.Format(layout)
+}
+
+func TimeToStringDuration(t time.Time) string {
+	return t.Format(layoutDuration)
 }

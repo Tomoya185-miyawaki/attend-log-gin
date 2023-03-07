@@ -5,7 +5,6 @@ go 1.20
 require (
 	github.com/jinzhu/gorm v1.9.16
 	github.com/joho/godotenv v1.5.1
-	gorm.io/gorm v1.24.5
 )
 
 require (

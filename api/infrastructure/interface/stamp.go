@@ -8,6 +8,8 @@ import (
 )
 
 type StampInterface interface {
-	// 従業員を取得する（ページネーションあり）
-	FetchStamps() (*dto.Stamps, error)
+	// 出退勤情報を取得する
+	FetchStamps(today string) (*dto.Stamps, error)
+	// カウントを取得する（ページネーション用）
+	FetchCount(today string) (*dto.StampCount, error)
 }

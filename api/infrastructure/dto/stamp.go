@@ -11,15 +11,26 @@ import (
 )
 
 type Stamp struct {
-	ID             uint      `gorm:"primary_key"`
-	EmployeeID     uint      `gorm:"index;not null"`
-	Status         uint8     `gorm:"not null"`
-	StampStartDate time.Time `gorm:"not null"`
+	ID             uint        `gorm:"primary_key"`
+	EmployeeID     uint        `gorm:"index;not null"`
+	Status         StampStatus `gorm:"not null"`
+	StampStartDate time.Time   `gorm:"not null"`
 	StampEndDate   time.Time
 	DeletedAt      time.Time `gorm:"default:null"`
 }
 
 type Stamps []Stamp
+
+type StampCount struct {
+	Cnt int
+}
+
+type StampStatus uint8
+
+const (
+	Attend = StampStatus(1)
+	Rest   = StampStatus(2)
+)
 
 func (stamp Stamp) ConvertToModel() *entity.Stamp {
 	return &entity.Stamp{
@@ -27,7 +38,9 @@ func (stamp Stamp) ConvertToModel() *entity.Stamp {
 		EmployeeID:     entity.EmployeeID(stamp.EmployeeID),
 		Status:         entity.Status(stamp.Status),
 		StampStartDate: entity.StampStartDate(helper.TimeToString(stamp.StampStartDate)),
+		StampStart:     entity.StampStart(helper.TimeToStringDuration(stamp.StampStartDate)),
 		StampEndDate:   entity.StampEndDate(helper.TimeToString(stamp.StampEndDate)),
+		StampEnd:       entity.StampEnd(helper.TimeToStringDuration(stamp.StampEndDate)),
 	}
 }
 
@@ -40,7 +53,9 @@ func (stamps Stamps) ConvertToModel() *entity.Stamps {
 			EmployeeID:     entity.EmployeeID(stamp.EmployeeID),
 			Status:         entity.Status(stamp.Status),
 			StampStartDate: entity.StampStartDate(helper.TimeToString(stamp.StampStartDate)),
+			StampStart:     entity.StampStart(helper.TimeToStringDuration(stamp.StampStartDate)),
 			StampEndDate:   entity.StampEndDate(helper.TimeToString(stamp.StampEndDate)),
+			StampEnd:       entity.StampEnd(helper.TimeToStringDuration(stamp.StampEndDate)),
 		}
 		result[idx] = stampEntity
 	}

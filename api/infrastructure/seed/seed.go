@@ -15,6 +15,8 @@ import (
 	"github.com/joho/godotenv"
 )
 
+var jst, _ = time.LoadLocation("Asia/Tokyo")
+
 var Admin = &dto.Admin{
 	ID:       1,
 	Name:     "管理者",
@@ -40,20 +42,52 @@ var Employee3 = &dto.Employee{
 	HourlyWage: 1000,
 }
 
-var Stamp1 = &dto.Stamp{
+var StampTodayAttend1 = &dto.Stamp{
 	ID:             1,
 	EmployeeID:     1,
 	Status:         1,
-	StampStartDate: time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.Local),
-	StampEndDate:   time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 9, 0, 0, 0, time.Local),
+	StampStartDate: time.Date(time.Now().In(jst).Year(), time.Now().In(jst).Month(), time.Now().In(jst).Day(), 0, 0, 0, 0, time.Local),
+	StampEndDate:   time.Date(time.Now().In(jst).Year(), time.Now().In(jst).Month(), time.Now().In(jst).Day(), 9, 0, 0, 0, time.Local),
 }
 
-var Stamp2 = &dto.Stamp{
+var StampTodayRest1 = &dto.Stamp{
 	ID:             2,
 	EmployeeID:     1,
 	Status:         2,
-	StampStartDate: time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 3, 0, 0, 0, time.Local),
-	StampEndDate:   time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 4, 0, 0, 0, time.Local),
+	StampStartDate: time.Date(time.Now().In(jst).Year(), time.Now().In(jst).Month(), time.Now().In(jst).Day(), 3, 0, 0, 0, time.Local),
+	StampEndDate:   time.Date(time.Now().In(jst).Year(), time.Now().In(jst).Month(), time.Now().In(jst).Day(), 4, 0, 0, 0, time.Local),
+}
+
+var StampYesterdayAttend1 = &dto.Stamp{
+	ID:             3,
+	EmployeeID:     1,
+	Status:         1,
+	StampStartDate: time.Date(time.Now().In(jst).Year(), time.Now().In(jst).Month(), time.Now().In(jst).Day()-1, 0, 0, 0, 0, time.Local),
+	StampEndDate:   time.Date(time.Now().In(jst).Year(), time.Now().In(jst).Month(), time.Now().In(jst).Day()-1, 9, 0, 0, 0, time.Local),
+}
+
+var StampYesterdayRest1 = &dto.Stamp{
+	ID:             4,
+	EmployeeID:     1,
+	Status:         2,
+	StampStartDate: time.Date(time.Now().In(jst).Year(), time.Now().In(jst).Month(), time.Now().In(jst).Day()-1, 3, 0, 0, 0, time.Local),
+	StampEndDate:   time.Date(time.Now().In(jst).Year(), time.Now().In(jst).Month(), time.Now().In(jst).Day()-1, 4, 0, 0, 0, time.Local),
+}
+
+var StampTodayAttend2 = &dto.Stamp{
+	ID:             5,
+	EmployeeID:     2,
+	Status:         1,
+	StampStartDate: time.Date(time.Now().In(jst).Year(), time.Now().In(jst).Month(), time.Now().In(jst).Day(), 0, 0, 0, 0, time.Local),
+	StampEndDate:   time.Date(time.Now().In(jst).Year(), time.Now().In(jst).Month(), time.Now().In(jst).Day(), 10, 0, 0, 0, time.Local),
+}
+
+var StampTodayRest2 = &dto.Stamp{
+	ID:             6,
+	EmployeeID:     2,
+	Status:         2,
+	StampStartDate: time.Date(time.Now().In(jst).Year(), time.Now().In(jst).Month(), time.Now().In(jst).Day(), 3, 0, 0, 0, time.Local),
+	StampEndDate:   time.Date(time.Now().In(jst).Year(), time.Now().In(jst).Month(), time.Now().In(jst).Day(), 3, 45, 0, 0, time.Local),
 }
 
 // シーダーを実行
@@ -89,7 +123,11 @@ func main() {
 			Create(Employee).
 			Create(Employee2).
 			Create(Employee3).
-			Create(Stamp1).
-			Create(Stamp2)
+			Create(StampTodayAttend1).
+			Create(StampTodayRest1).
+			Create(StampYesterdayAttend1).
+			Create(StampYesterdayRest1).
+			Create(StampTodayAttend2).
+			Create(StampTodayRest2)
 	}
 }

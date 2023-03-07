@@ -13,6 +13,8 @@ type EmployeeInterface interface {
 	FetchEmployees(page int, limit int, offset int) (*dto.Employees, error, int64)
 	// IDをキーにして、従業員を取得する
 	FetchEmployeeById(id string) (*dto.Employee, error)
+	// IDをキーにして、複数従業員を取得する
+	FetchEmployeeByIds(ids []uint) (*dto.Employees, error)
 	// 従業員を作成する
 	Create(request *employee.EmployeeCreateRequest, hourlyWage uint) error
 	// 従業員を更新する
