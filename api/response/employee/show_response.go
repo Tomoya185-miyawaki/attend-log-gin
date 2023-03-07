@@ -4,7 +4,7 @@
 package employee
 
 import (
-	"github.com/Tomoya185-miyawaki/attend-log-gin/entity"
+	entity "github.com/Tomoya185-miyawaki/attend-log-gin/entity/employee"
 )
 
 type ShowResponse struct {

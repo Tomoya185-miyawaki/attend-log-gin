@@ -36,6 +36,10 @@ db:
 seed:
 	$(DC) exec api go run infrastructure/seed/seed.go
 
+.PHONY: debug
+debug:
+	$(DC) exec api tail -f log/app.log
+
 .PHONY: init
 init:
 	$(DC) up -d --build

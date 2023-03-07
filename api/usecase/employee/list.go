@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/Tomoya185-miyawaki/attend-log-gin/entity"
+	entity "github.com/Tomoya185-miyawaki/attend-log-gin/entity/employee"
 	"github.com/Tomoya185-miyawaki/attend-log-gin/infrastructure/repository"
 	response "github.com/Tomoya185-miyawaki/attend-log-gin/response/employee"
 	"github.com/gin-gonic/gin"
