@@ -7,6 +7,7 @@ import (
 	"math"
 	"net/http"
 	"strconv"
+	"time"
 
 	entity "github.com/Tomoya185-miyawaki/attend-log-gin/entity/stamp"
 	"github.com/Tomoya185-miyawaki/attend-log-gin/helper"
@@ -87,7 +88,22 @@ func (stampListUseCase *StampListUseCase) Exec(
 		employeeNameId[employee.ID] = employee.Name
 	}
 
+	resStampsDate := getAttendRestDate(stamps, employeeNameId)
+
+	// レスポンス設定
+	successResponse.Stamps = resStampsDate
+	successResponse.CurrentPage = intPage
+	successResponse.EmployeeIds = employeeIds
+	successResponse.LastPage = totalPages
+	return successResponse.Success(), true
+}
+
+func getAttendRestDate(stamps *dto.Stamps, employeeNameId map[uint]string) map[string]entity.StampDate {
 	stampDate := entity.NewStampDate()
+	var attendDate time.Time    // 出勤時刻
+	var leavingDate time.Time   // 退勤時刻
+	var restStartDate time.Time //休憩開始時刻
+	var restEndDate time.Time   //休憩終了時刻
 	var resStampsDate map[string]entity.StampDate = make(map[string]entity.StampDate)
 	for _, stamp := range *stamps {
 		if _, ok := employeeNameId[uint(stamp.EmployeeID)]; !ok {
@@ -96,25 +112,40 @@ func (stampListUseCase *StampListUseCase) Exec(
 		if stamp.Status == dto.Attend {
 			stampDate.SetAttendDate(entity.AttendDate(helper.TimeToStringDuration(stamp.StampStartDate)))
 			stampDate.SetLeavingDate(entity.LeavingDate(helper.TimeToStringDuration(stamp.StampEndDate)))
+			attendDate = stamp.StampStartDate
+			leavingDate = stamp.StampEndDate
 		}
 		if stamp.Status == dto.Rest {
-			restStartDate := stamp.StampStartDate
-			restEndDate := stamp.StampEndDate
-			sub := restEndDate.Sub(restStartDate)
+			restStartDate = stamp.StampStartDate
+			restEndDate = stamp.StampEndDate
 			if !restEndDate.IsZero() {
-				stampDate.SetRestDate(entity.RestDate(strconv.Itoa(int(sub.Minutes())) + "分"))
+				restDate := restEndDate.Sub(restStartDate)
+				if restDate.Hours() >= 1 {
+					stampDate.SetRestDate(entity.RestDate(strconv.Itoa(int(restDate.Hours())) + "時間" + strconv.Itoa(int(restDate.Minutes()-(restDate.Hours()*60))) + "分"))
+				} else {
+					stampDate.SetRestDate(entity.RestDate(strconv.Itoa(int(restDate.Minutes())) + "分"))
+				}
 			} else {
 				stampDate.SetRestDate("-")
 			}
 			stampDate.SetWorkingDate(entity.WorkingDate(helper.TimeToStringDuration(stamp.StampEndDate)))
 		}
+		if !leavingDate.IsZero() {
+			var workingMinutes float64 // 労働時間（分）
+			workingDate := leavingDate.Sub(attendDate)
+			if !restEndDate.IsZero() {
+				restDate := restEndDate.Sub(restStartDate)
+				workingMinutes = workingDate.Minutes() - restDate.Minutes()
+			} else {
+				workingMinutes = workingDate.Minutes()
+			}
+			if int(workingMinutes)/60 >= 1 {
+				stampDate.SetWorkingDate(entity.WorkingDate(strconv.Itoa(int(workingMinutes)/60)+"時間"+strconv.Itoa(int(workingMinutes)%60)) + "分")
+			} else {
+				stampDate.SetWorkingDate(entity.WorkingDate(strconv.Itoa(int(workingMinutes)) + "分"))
+			}
+		}
 		resStampsDate[employeeNameId[uint(stamp.EmployeeID)]] = *stampDate
 	}
-
-	// レスポンス設定
-	successResponse.Stamps = resStampsDate
-	successResponse.CurrentPage = intPage
-	successResponse.EmployeeIds = employeeIds
-	successResponse.LastPage = totalPages
-	return successResponse.Success(), true
+	return resStampsDate
 }
