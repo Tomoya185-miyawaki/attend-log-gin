@@ -6,9 +6,11 @@ package repository
 import (
 	"errors"
 
+	"github.com/Tomoya185-miyawaki/attend-log-gin/helper"
 	db "github.com/Tomoya185-miyawaki/attend-log-gin/infrastructure"
 	"github.com/Tomoya185-miyawaki/attend-log-gin/infrastructure/dto"
 	IDENT "github.com/Tomoya185-miyawaki/attend-log-gin/infrastructure/interface"
+	"github.com/Tomoya185-miyawaki/attend-log-gin/request/stamp"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -41,4 +43,18 @@ func (sr *stampRepository) FetchCount(today string) (*dto.StampCount, error) {
 		return nil, errors.New("出退勤カウントが取得できませんでした")
 	}
 	return stampCount, nil
+}
+
+func (sr *stampRepository) Create(request *stamp.StampCreateRequest) error {
+	db := db.GetDB()
+	stamp := &dto.Stamp{
+		EmployeeID:     uint(request.EmployeeId),
+		Status:         dto.StampStatus(request.Status),
+		StampStartDate: helper.StringToTime(request.StampDate),
+	}
+
+	if err := db.Create(&stamp).Error; err != nil {
+		return errors.New("従業員を取得できませんでした")
+	}
+	return nil
 }

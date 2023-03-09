@@ -24,6 +24,19 @@ func TimeToString(t time.Time) string {
 	return t.Format(layout)
 }
 
+func TimeToStringPointer(t *time.Time) string {
+	return t.Format(layout)
+}
+
 func TimeToStringDuration(t time.Time) string {
 	return t.Format(layoutDuration)
+}
+
+func TimeToStringDurationPointer(t *time.Time) string {
+	return t.Format(layoutDuration)
+}
+
+func StringToTime(str string) time.Time {
+	t, _ := time.Parse(layout, str)
+	return t
 }
