@@ -8,6 +8,7 @@ import (
 
 	entity "github.com/Tomoya185-miyawaki/attend-log-gin/entity/stamp"
 	"github.com/Tomoya185-miyawaki/attend-log-gin/helper"
+	"gorm.io/gorm"
 )
 
 type Stamp struct {
@@ -16,7 +17,7 @@ type Stamp struct {
 	Status         StampStatus `gorm:"not null"`
 	StampStartDate time.Time   `gorm:"not null"`
 	StampEndDate   time.Time
-	DeletedAt      time.Time `gorm:"default:null"`
+	DeletedAt      gorm.DeletedAt `gorm:"default:null"`
 }
 
 type Stamps []Stamp

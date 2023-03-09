@@ -7,15 +7,16 @@ import (
 	"time"
 
 	entity "github.com/Tomoya185-miyawaki/attend-log-gin/entity/employee"
+	"gorm.io/gorm"
 )
 
 type Employee struct {
-	ID         uint      `gorm:"primary_key"`
-	Name       string    `gorm:"not null"`
-	HourlyWage uint      `gorm:"not null"`
-	CreateAt   time.Time `gorm:"default:current_timestamp"`
-	UpdatedAt  time.Time `gorm:"default:current_timestamp"`
-	DeletedAt  time.Time `gorm:"default:null"`
+	ID         uint           `gorm:"primary_key"`
+	Name       string         `gorm:"not null"`
+	HourlyWage uint           `gorm:"not null"`
+	CreateAt   time.Time      `gorm:"default:current_timestamp"`
+	UpdatedAt  time.Time      `gorm:"default:current_timestamp"`
+	DeletedAt  gorm.DeletedAt `gorm:"default:null"`
 }
 
 type Employees []Employee
