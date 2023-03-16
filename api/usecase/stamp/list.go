@@ -4,6 +4,7 @@
 package stamp
 
 import (
+	"fmt"
 	"math"
 	"net/http"
 	"strconv"
@@ -105,15 +106,18 @@ func getAttendRestDate(stamps *dto.Stamps, employeeNameId map[uint]string) map[s
 	var restStartDate time.Time //休憩開始時刻
 	var restEndDate time.Time   //休憩終了時刻
 	var resStampsDate map[string]entity.StampDate = make(map[string]entity.StampDate)
+	fmt.Println(stamps)
 	for _, stamp := range *stamps {
 		if _, ok := employeeNameId[uint(stamp.EmployeeID)]; !ok {
 			continue
 		}
 		if stamp.Status == dto.Attend {
 			stampDate.SetAttendDate(entity.AttendDate(helper.TimeToStringDuration(stamp.StampStartDate)))
-			stampDate.SetLeavingDate(entity.LeavingDate(helper.TimeToStringDuration(stamp.StampEndDate)))
 			attendDate = stamp.StampStartDate
-			leavingDate = stamp.StampEndDate
+			if !stamp.StampEndDate.IsZero() {
+				stampDate.SetLeavingDate(entity.LeavingDate(helper.TimeToStringDuration(stamp.StampEndDate)))
+				leavingDate = stamp.StampEndDate
+			}
 		}
 		if stamp.Status == dto.Rest {
 			restStartDate = stamp.StampStartDate
@@ -130,7 +134,7 @@ func getAttendRestDate(stamps *dto.Stamps, employeeNameId map[uint]string) map[s
 			}
 			stampDate.SetWorkingDate(entity.WorkingDate(helper.TimeToStringDuration(stamp.StampEndDate)))
 		}
-		if !leavingDate.IsZero() {
+		if !stamp.StampEndDate.IsZero() {
 			var workingMinutes float64 // 労働時間（分）
 			workingDate := leavingDate.Sub(attendDate)
 			if !restEndDate.IsZero() {

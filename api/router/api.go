@@ -15,8 +15,8 @@ import (
 func Bind() *gin.Engine {
 	// ログの設定
 	helper.SetUpLog()
-	// タイムゾーンの設定
-	helper.SetLocation("Asia/Tokyo")
+	// タイムゾーンの設定(日本時間)
+	helper.SetAsiaLocation()
 	// ルーティングの初期化
 	router := gin.Default()
 	// corsの設定
@@ -42,6 +42,7 @@ func Bind() *gin.Engine {
 			route.PATCH("/employee/:id", employeeCtrl.Update)   // 従業員更新取得
 			route.DELETE("/employee/:id", employeeCtrl.Delete)  // 従業員削除取得
 			route.GET("/stamp", stampCtrl.List)                 // 出退勤一覧取得
+			route.POST("/stamp/create", stampCtrl.Create)       // 出退勤登録取得
 		}
 	}
 	return router

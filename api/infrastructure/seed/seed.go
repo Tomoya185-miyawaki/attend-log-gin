@@ -100,7 +100,7 @@ func main() {
 	godotenv.Load()
 
 	// タイムゾーンの設定
-	helper.SetLocation("Asia/Tokyo")
+	helper.SetAsiaLocation()
 
 	db, err := gorm.Open("mysql", os.Getenv("DB_CONNECT"))
 	if err != nil {
