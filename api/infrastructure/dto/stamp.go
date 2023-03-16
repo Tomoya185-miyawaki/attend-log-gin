@@ -16,7 +16,7 @@ type Stamp struct {
 	EmployeeID     uint        `gorm:"index;not null"`
 	Status         StampStatus `gorm:"not null"`
 	StampStartDate time.Time   `gorm:"not null"`
-	StampEndDate   *time.Time
+	StampEndDate   time.Time
 	DeletedAt      gorm.DeletedAt `gorm:"default:null"`
 }
 
@@ -33,16 +33,25 @@ const (
 	Rest   = StampStatus(2)
 )
 
+type StampRequestStatus int
+
+const (
+	AttendStart = StampRequestStatus(1)
+	RestStart   = StampRequestStatus(2)
+	RestEnd     = StampRequestStatus(3)
+	WorkingEnd  = StampRequestStatus(4)
+)
+
 func (stamp Stamp) ConvertToModel() *entity.Stamp {
-	if stamp.StampEndDate != nil {
+	if !stamp.StampEndDate.IsZero() {
 		return &entity.Stamp{
 			ID:             entity.ID(stamp.ID),
 			EmployeeID:     entity.EmployeeID(stamp.EmployeeID),
 			Status:         entity.Status(stamp.Status),
 			StampStartDate: entity.StampStartDate(helper.TimeToString(stamp.StampStartDate)),
 			StampStart:     entity.StampStart(helper.TimeToStringDuration(stamp.StampStartDate)),
-			StampEndDate:   entity.StampEndDate(helper.TimeToStringPointer(stamp.StampEndDate)),
-			StampEnd:       entity.StampEnd(helper.TimeToStringDurationPointer(stamp.StampEndDate)),
+			StampEndDate:   entity.StampEndDate(helper.TimeToString(stamp.StampEndDate)),
+			StampEnd:       entity.StampEnd(helper.TimeToStringDuration(stamp.StampEndDate)),
 		}
 	}
 	return &entity.Stamp{
@@ -58,16 +67,16 @@ func (stamps Stamps) ConvertToModel() *entity.Stamps {
 	result := make(entity.Stamps, len(stamps))
 
 	for idx, stamp := range stamps {
-		stampEntity := entity.Stamp{}
-		if stamp.StampEndDate != nil {
+		var stampEntity entity.Stamp
+		if !stamp.StampEndDate.IsZero() {
 			stampEntity = entity.Stamp{
 				ID:             entity.ID(stamp.ID),
 				EmployeeID:     entity.EmployeeID(stamp.EmployeeID),
 				Status:         entity.Status(stamp.Status),
 				StampStartDate: entity.StampStartDate(helper.TimeToString(stamp.StampStartDate)),
 				StampStart:     entity.StampStart(helper.TimeToStringDuration(stamp.StampStartDate)),
-				StampEndDate:   entity.StampEndDate(helper.TimeToStringPointer(stamp.StampEndDate)),
-				StampEnd:       entity.StampEnd(helper.TimeToStringDurationPointer(stamp.StampEndDate)),
+				StampEndDate:   entity.StampEndDate(helper.TimeToString(stamp.StampEndDate)),
+				StampEnd:       entity.StampEnd(helper.TimeToString(stamp.StampEndDate)),
 			}
 		} else {
 			stampEntity = entity.Stamp{

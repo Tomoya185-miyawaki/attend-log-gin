@@ -15,8 +15,8 @@ import (
 func Bind() *gin.Engine {
 	// ログの設定
 	helper.SetUpLog()
-	// タイムゾーンの設定
-	helper.SetLocation("Asia/Tokyo")
+	// タイムゾーンの設定(日本時間)
+	helper.SetAsiaLocation()
 	// ルーティングの初期化
 	router := gin.Default()
 	// corsの設定

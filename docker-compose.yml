@@ -38,6 +38,8 @@ services:
     container_name: attend-log-gin-db
     ports:
       - 3306:3306
+    command:
+      - --sql-mode=ALLOW_INVALID_DATES
     environment:
       MYSQL_DATABASE: attend_log
       MYSQL_USER: attend_log
