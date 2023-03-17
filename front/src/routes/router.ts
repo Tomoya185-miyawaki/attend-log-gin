@@ -8,6 +8,7 @@ import EmployeeEdit from '@/pages/admin/employee/Edit.vue'
 import StampList from '@/pages/admin/stamp/List.vue'
 import StampEdit from '@/pages/admin/stamp/Edit.vue'
 import AdminErrorPage from '@/pages/admin/ErrorPage.vue'
+import NotFoundPage from '@/pages/employee/NotFoundPage.vue'
 import AdminNotFoundPage from '@/pages/admin/NotFoundPage.vue'
 
 const routes = [
@@ -48,6 +49,11 @@ const routes = [
     meta: { adminAuthOnly: true }
   },
   {
+    path: '/',
+    name: 'employeeStampCreate',
+    component: StampList,
+  },
+  {
     path: '/admin/stamp/:employeeId',
     name: 'stampEdit',
     component: StampEdit,
@@ -61,6 +67,10 @@ const routes = [
   {
     path: '/admin/:catchAll(.*)',
     component: AdminNotFoundPage
+  },
+  {
+    path: '/:catchAll(.*)',
+    component: NotFoundPage
   },
 ]
 

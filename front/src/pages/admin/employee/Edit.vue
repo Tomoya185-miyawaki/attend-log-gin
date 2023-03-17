@@ -51,7 +51,7 @@
 import { defineComponent, ref } from 'vue'
 import { useField, useForm } from 'vee-validate'
 import * as yup from 'yup'
-import HeaderComponent from '@/components/layouts/HeaderComponent.vue'
+import HeaderComponent from '@/components/layouts/admin/HeaderComponent.vue'
 import LoadingComponent from '@/components/parts/LoadingComponent.vue'
 import ApiService from '@/services/ApiService'
 import router from '@/routes/router'
