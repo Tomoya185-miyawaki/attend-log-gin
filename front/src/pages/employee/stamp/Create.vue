@@ -77,6 +77,9 @@ export default defineComponent({
         .then(res => {
           employees.value = res.employees
         })
+        .catch(() => {
+          router.push({ name: 'error' })
+        })
     }
     getEmployees()
 
@@ -93,6 +96,7 @@ export default defineComponent({
         })
         .catch(() => {
           isLoading.value = false
+          router.push({ name: 'error' })
         })
     }
     getStampsByEmployeeId()

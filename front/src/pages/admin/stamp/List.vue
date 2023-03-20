@@ -86,6 +86,7 @@ export default defineComponent({
         })
         .catch(() => {
           isLoading.value = false
+          router.push({ name: 'adminError' })
         })
     }
     getStamps(today, currentPage.value)

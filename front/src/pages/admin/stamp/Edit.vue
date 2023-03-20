@@ -22,6 +22,7 @@ import LoadingComponent from '@/components/parts/LoadingComponent.vue'
 import ApiService from '@/services/ApiService'
 import { getTitle, getColor } from '@/util/fullCalendar'
 import { useRoute } from 'vue-router'
+import router from '@/routes/router'
 
 export default defineComponent({
   name: 'StampEditPage',
@@ -73,6 +74,7 @@ export default defineComponent({
         })
         .catch(() => {
           isLoading.value = false
+          router.push({ name: 'adminError' })
         })
     }
     getStampDetail(employeeId)

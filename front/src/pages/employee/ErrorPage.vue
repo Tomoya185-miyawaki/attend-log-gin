@@ -11,7 +11,7 @@
         <v-col cols="12">
           <router-link
             elevation="2"
-            to="/admin/employee"
+            to="/"
           >
             トップに戻る
           </router-link>
@@ -26,7 +26,7 @@ import { defineComponent } from 'vue'
 import HeaderComponent from '@/components/layouts/admin/HeaderComponent.vue'
 
 export default defineComponent({
-  name: 'AdminErrorPage',
+  name: 'EmployeeErrorPage',
   components: {
     HeaderComponent,
   },

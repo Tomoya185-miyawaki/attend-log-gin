@@ -11,6 +11,7 @@ import StampList from '@/pages/admin/stamp/List.vue'
 import StampEdit from '@/pages/admin/stamp/Edit.vue'
 import AdminErrorPage from '@/pages/admin/ErrorPage.vue'
 import NotFoundPage from '@/pages/employee/NotFoundPage.vue'
+import ErrorPage from '@/pages/employee/ErrorPage.vue'
 import AdminNotFoundPage from '@/pages/admin/NotFoundPage.vue'
 
 const routes = [
@@ -65,6 +66,11 @@ const routes = [
     name: 'stampEdit',
     component: StampEdit,
     meta: { adminAuthOnly: true }
+  },
+  {
+    path: '/error',
+    name: 'error',
+    component: ErrorPage
   },
   {
     path: '/admin/error',

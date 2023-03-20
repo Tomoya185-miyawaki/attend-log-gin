@@ -4,7 +4,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"time"
 
@@ -12,7 +11,7 @@ import (
 	"github.com/Tomoya185-miyawaki/attend-log-gin/infrastructure/dto"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"github.com/joho/godotenv"
+	log "github.com/sirupsen/logrus"
 )
 
 var jst, _ = time.LoadLocation("Asia/Tokyo")
@@ -92,22 +91,18 @@ var StampTodayRest2 = &dto.Stamp{
 
 // シーダーを実行
 func main() {
-	env := os.Getenv("ENV")
-	if env != "production" {
-		env = "development"
-	}
-	godotenv.Load(".env." + env)
-	godotenv.Load()
+	// env読み込み
+	helper.GetEnv()
 
 	// タイムゾーンの設定
 	helper.SetAsiaLocation()
 
 	db, err := gorm.Open("mysql", os.Getenv("DB_CONNECT"))
 	if err != nil {
-		fmt.Println("db init error: ", err)
+		log.Warn("db init error: ", err)
 	}
 
-	if env != "production" {
+	if os.Getenv("ENV") != "production" {
 		// マイグレーション
 		db.
 			DropTable(&dto.Admin{}).

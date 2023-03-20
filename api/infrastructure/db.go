@@ -4,13 +4,13 @@ DB用パッケージ
 package infrastructure
 
 import (
-	"fmt"
 	"os"
 
+	"github.com/Tomoya185-miyawaki/attend-log-gin/helper"
 	"github.com/Tomoya185-miyawaki/attend-log-gin/infrastructure/dto"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"github.com/joho/godotenv"
+	log "github.com/sirupsen/logrus"
 )
 
 var (
@@ -20,16 +20,12 @@ var (
 
 // DBの初期化
 func Init() *gorm.DB {
-	env := os.Getenv("ENV")
-	if env != "production" {
-		env = "development"
-	}
-	godotenv.Load(".env." + env)
-	godotenv.Load()
+	// env読み込み
+	helper.GetEnv()
 
 	db, err = gorm.Open("mysql", os.Getenv("DB_CONNECT"))
 	if err != nil {
-		fmt.Println("db init error: ", err)
+		log.Warn("db init error: ", err)
 	}
 
 	// マイグレーション
