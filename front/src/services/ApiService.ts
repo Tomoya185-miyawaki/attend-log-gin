@@ -1,16 +1,26 @@
 import http from '@/util/http'
-import { LoginFormData, PasswordResetFormData, EmployeeFormData } from '@/types/auth'
+import {
+  LoginFormData,
+  PasswordResetFormData,
+  EmployeeFormData
+} from '@/types/auth'
+import {
+  CreateStampData
+} from '@/types/stamp'
 import {
   LoginResponse,
   LogoutResponse,
   PasswordResetResponse,
+  GetEmployees,
   GetEmployeesByIdRes,
   GetEmployeesByPaginateRes,
   CreateEmployeeRes,
   UpdateEmployeeRes,
   DeleteEmployeeRes,
   GetStampsByPaginateRes,
-  GetStampDetailRes
+  GetStampsByEmployeeId,
+  GetStampDetailRes,
+  CreateStampRes
 } from '@/types/api/response'
 
 class ApiService {
@@ -36,6 +46,11 @@ class ApiService {
     return response.data
   }
 
+  async getEmployees(): Promise<GetEmployees> {
+    const response = await http.get(`/api/employees`)
+    return response.data
+  }
+
   createEmployee(formData: EmployeeFormData): Promise<CreateEmployeeRes> {
     return http.post('/api/employee/create', formData)
   }
@@ -48,6 +63,11 @@ class ApiService {
     return http.delete(`/api/employee/${id}`)
   }
 
+  async getStampsByEmployeeId(employeeId: number, today: string): Promise<GetStampsByEmployeeId> {
+    const response = await http.get(`/api/stamps/${employeeId}?today=${today}`)
+    return response.data
+  }
+
   async getStampsByPaginate(today: string, page: number): Promise<GetStampsByPaginateRes> {
     const response = await http.get(`/api/stamp?today=${today}&page=${page}`)
     return response.data
@@ -56,6 +76,10 @@ class ApiService {
   async getStampDetail(employeeId: string): Promise<GetStampDetailRes> {
     const response = await http.get(`/api/stamp/${employeeId}`)
     return response.data
+  }
+
+  createStamp(apiData: CreateStampData): Promise<CreateStampRes> {
+    return http.post('/api/stamp/create', apiData)
   }
 }
 

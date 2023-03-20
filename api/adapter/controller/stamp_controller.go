@@ -21,6 +21,16 @@ func (sc *StampController) List(c *gin.Context) {
 	}
 }
 
+func (sc *StampController) Detail(c *gin.Context) {
+	var stampListUseCase usecase.StampDetailUseCase
+	response, isSuccess := stampListUseCase.Exec(c)
+	if !isSuccess {
+		helper.Response(c, nil, response, http.StatusBadRequest)
+	} else {
+		helper.Response(c, response, nil, http.StatusOK)
+	}
+}
+
 func (sc *StampController) Create(c *gin.Context) {
 	var request stamp.StampCreateRequest
 	var stampCreateUseCase usecase.StampCreateUseCase

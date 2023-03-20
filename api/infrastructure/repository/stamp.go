@@ -32,6 +32,17 @@ func (sr *stampRepository) FetchStamps(today string) (*dto.Stamps, error) {
 	return stamps, nil
 }
 
+func (sr *stampRepository) FetchStampsByEmployeeId(employeeId string, today string) (*dto.Stamps, error) {
+	db := db.GetDB()
+	stamps := &dto.Stamps{}
+
+	if err := db.Where("employee_id = ?", employeeId).Where("stamp_start_date like ?", "%"+today+"%").Find(&stamps).Error; err != nil {
+		log.Warn(err.Error())
+		return nil, errors.New("従業員IDに紐づく出退勤が取得できませんでした")
+	}
+	return stamps, nil
+}
+
 func (sr *stampRepository) FetchCount(today string) (*dto.StampCount, error) {
 	db := db.GetDB()
 	stampCount := &dto.StampCount{}

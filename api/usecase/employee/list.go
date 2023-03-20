@@ -20,6 +20,19 @@ type EmployeeListUseCase struct{}
 func (employeeListUseCase *EmployeeListUseCase) Exec(
 	c *gin.Context,
 ) (interface{}, bool) {
+	// 従業員一覧を取得する
+	employees, err := repository.NewEmployeeRepository().FetchEmployees()
+	if err != nil {
+		log.Warn(err.Error())
+		return badRequestResponse(), false
+	}
+	entityEmployees := employees.ConvertToModel()
+	return successResponse(*entityEmployees), true
+}
+
+func (employeeListUseCase *EmployeeListUseCase) ExecPaginate(
+	c *gin.Context,
+) (interface{}, bool) {
 	// クエリパラメータからpageを取得
 	page := c.Query("page")
 	if page == "" {
@@ -38,14 +51,14 @@ func (employeeListUseCase *EmployeeListUseCase) Exec(
 		offset = -1
 	}
 	// 従業員一覧を取得する
-	employees, err, total := repository.NewEmployeeRepository().FetchEmployees(intPage, limit, offset)
+	employees, err, total := repository.NewEmployeeRepository().FetchEmployeesByPaginate(intPage, limit, offset)
 	if err != nil {
 		log.Warn(err.Error())
 		return badRequestResponse(), false
 	}
 	totalPages := int(math.Ceil(float64(total) / float64(limit)))
 	entityEmployees := employees.ConvertToModel()
-	return successRequestResponse(intPage, *entityEmployees, totalPages), true
+	return successPaginateResponse(intPage, *entityEmployees, totalPages), true
 }
 
 func badRequestResponse() *response.BadListResponse {
@@ -55,12 +68,20 @@ func badRequestResponse() *response.BadListResponse {
 	}
 }
 
-func successRequestResponse(
+func successResponse(employees entity.Employees) *response.SuccessResponse {
+	return &response.SuccessResponse{
+		StatusCode: http.StatusOK,
+		Emplyees:   employees,
+	}
+}
+
+func successPaginateResponse(
 	currentPage int,
 	employees entity.Employees,
 	lastPage int,
-) *response.ListResponse {
-	return &response.ListResponse{
+) *response.ListPaginateResponse {
+	return &response.ListPaginateResponse{
+		StatusCode:  http.StatusOK,
 		CurrentPage: currentPage,
 		Emplyees:    employees,
 		LastPage:    lastPage,

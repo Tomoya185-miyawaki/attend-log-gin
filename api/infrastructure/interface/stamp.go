@@ -11,6 +11,8 @@ import (
 type StampInterface interface {
 	// 出退勤情報を取得する
 	FetchStamps(today string) (*dto.Stamps, error)
+	// 従業員IDに紐づく出退勤情報を取得する
+	FetchStampsByEmployeeId(employeeId string, today string) (*dto.Stamps, error)
 	// カウントを取得する（ページネーション用）
 	FetchCount(today string) (*dto.StampCount, error)
 	// 出勤・休憩開始を登録する

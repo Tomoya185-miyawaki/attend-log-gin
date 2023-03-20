@@ -51,7 +51,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { Employee } from '@/types/model'
-import HeaderComponent from '@/components/layouts/HeaderComponent.vue'
+import HeaderComponent from '@/components/layouts/admin/HeaderComponent.vue'
 import LoadingComponent from '@/components/parts/LoadingComponent.vue'
 import ApiService from '@/services/ApiService'
 import router from '@/routes/router'
