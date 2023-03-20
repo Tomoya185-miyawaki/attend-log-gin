@@ -4,7 +4,6 @@
 package stamp
 
 import (
-	"fmt"
 	"math"
 	"net/http"
 	"strconv"
@@ -106,7 +105,6 @@ func getAttendRestDate(stamps *dto.Stamps, employeeNameId map[uint]string) map[s
 	var restStartDate time.Time //休憩開始時刻
 	var restEndDate time.Time   //休憩終了時刻
 	var resStampsDate map[string]entity.StampDate = make(map[string]entity.StampDate)
-	fmt.Println(stamps)
 	for _, stamp := range *stamps {
 		if _, ok := employeeNameId[uint(stamp.EmployeeID)]; !ok {
 			continue
