@@ -4,7 +4,6 @@
 package stamp
 
 import (
-	"fmt"
 	"math"
 	"net/http"
 	"strconv"
@@ -106,47 +105,72 @@ func getAttendRestDate(stamps *dto.Stamps, employeeNameId map[uint]string) map[s
 	var restStartDate time.Time //休憩開始時刻
 	var restEndDate time.Time   //休憩終了時刻
 	var resStampsDate map[string]entity.StampDate = make(map[string]entity.StampDate)
-	fmt.Println(stamps)
 	for _, stamp := range *stamps {
 		if _, ok := employeeNameId[uint(stamp.EmployeeID)]; !ok {
 			continue
 		}
+		// 出社/退勤時刻の設定
 		if stamp.Status == dto.Attend {
+			// 出社時刻の設定
 			stampDate.SetAttendDate(entity.AttendDate(helper.TimeToStringDuration(stamp.StampStartDate)))
 			attendDate = stamp.StampStartDate
+			// 退勤時刻が設定されている場合
 			if !stamp.StampEndDate.IsZero() {
 				stampDate.SetLeavingDate(entity.LeavingDate(helper.TimeToStringDuration(stamp.StampEndDate)))
 				leavingDate = stamp.StampEndDate
+			} else {
+				// 退勤時刻が設定されていない場合
+				stampDate.SetLeavingDate("-")
+				stampDate.SetWorkingDate("-")
 			}
 		}
+		// 休憩時刻の設定
 		if stamp.Status == dto.Rest {
 			restStartDate = stamp.StampStartDate
 			restEndDate = stamp.StampEndDate
+			// 休憩終了時刻が設定されている場合
 			if !restEndDate.IsZero() {
 				restDate := restEndDate.Sub(restStartDate)
+				// 休憩時間が1時間以上の場合
 				if restDate.Hours() >= 1 {
 					stampDate.SetRestDate(entity.RestDate(strconv.Itoa(int(restDate.Hours())) + "時間" + strconv.Itoa(int(restDate.Minutes()-(restDate.Hours()*60))) + "分"))
 				} else {
+					// 休憩時間が1時間未満の場合
 					stampDate.SetRestDate(entity.RestDate(strconv.Itoa(int(restDate.Minutes())) + "分"))
 				}
 			} else {
+				// 休憩終了時刻が設定されていない場合
 				stampDate.SetRestDate("-")
 			}
-			stampDate.SetWorkingDate(entity.WorkingDate(helper.TimeToStringDuration(stamp.StampEndDate)))
+			// 退勤時刻が設定されている場合は労働時間を設定
+			if stampDate.GetLeavingDate() != "-" {
+				stampDate.SetWorkingDate(entity.WorkingDate(helper.TimeToStringDuration(stamp.StampEndDate)))
+			} else {
+				// 退勤時刻が設定されていない場合は労働時間を「-」で設定
+				stampDate.SetWorkingDate("-")
+			}
 		}
 		if !stamp.StampEndDate.IsZero() {
 			var workingMinutes float64 // 労働時間（分）
 			workingDate := leavingDate.Sub(attendDate)
+			// 休憩終了時間が設定されている場合
 			if !restEndDate.IsZero() {
 				restDate := restEndDate.Sub(restStartDate)
 				workingMinutes = workingDate.Minutes() - restDate.Minutes()
 			} else {
+				// 休憩終了時間が設定されていない場合
 				workingMinutes = workingDate.Minutes()
 			}
-			if int(workingMinutes)/60 >= 1 {
-				stampDate.SetWorkingDate(entity.WorkingDate(strconv.Itoa(int(workingMinutes)/60)+"時間"+strconv.Itoa(int(workingMinutes)%60)) + "分")
+			if stampDate.GetLeavingDate() != "-" {
+				// 1時間以上の労働の場合
+				if int(workingMinutes)/60 >= 1 {
+					stampDate.SetWorkingDate(entity.WorkingDate(strconv.Itoa(int(workingMinutes)/60)+"時間"+strconv.Itoa(int(workingMinutes)%60)) + "分")
+				} else {
+					// 1時間未満の労働の場合
+					stampDate.SetWorkingDate(entity.WorkingDate(strconv.Itoa(int(workingMinutes)) + "分"))
+				}
 			} else {
-				stampDate.SetWorkingDate(entity.WorkingDate(strconv.Itoa(int(workingMinutes)) + "分"))
+				stampDate.SetWorkingDate("-")
 			}
 		}
 		resStampsDate[employeeNameId[uint(stamp.EmployeeID)]] = *stampDate
