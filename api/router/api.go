@@ -23,6 +23,8 @@ func Bind() *gin.Engine {
 	router.Use(middleware.NewCorsConfig())
 	// セッションの設定
 	router.Use(middleware.InitSession())
+	// タイムアウトの設定
+	router.Use(middleware.Timeout())
 	// ルーティング
 	route := router.Group("/api")
 	{
