@@ -33,6 +33,7 @@ func Bind() *gin.Engine {
 		route.POST("/admin/login", authCtrl.Login)                  // ログイン
 		route.POST("/admin/password-reset", authCtrl.PasswordReset) // パスワードリセッt
 		route.GET("/employees", employeeCtrl.List)                  // 従業員一覧取得(ページネーションなし)
+		route.GET("/stamps/:employeeId", stampCtrl.Detail)          // 出退勤一覧取得(従業員IDで絞る)
 		// ログインが必要なルーティング
 		route.Use(middleware.AdminLoginCheck())
 		{

@@ -1,5 +1,6 @@
 export enum StampStatus {
   Attend = 1,
-  Leaving = 2,
-  Rest = 3
+  RestStart = 2,
+  RestEnd = 3,
+  Leaving = 4
 }
