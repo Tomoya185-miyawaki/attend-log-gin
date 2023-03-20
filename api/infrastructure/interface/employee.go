@@ -9,8 +9,10 @@ import (
 )
 
 type EmployeeInterface interface {
+	// 従業員を取得する（ページネーションなし）
+	FetchEmployees() (*dto.Employees, error)
 	// 従業員を取得する（ページネーションあり）
-	FetchEmployees(page int, limit int, offset int) (*dto.Employees, error, int64)
+	FetchEmployeesByPaginate(page int, limit int, offset int) (*dto.Employees, error, int64)
 	// IDをキーにして、従業員を取得する
 	FetchEmployeeById(id string) (*dto.Employee, error)
 	// IDをキーにして、複数従業員を取得する

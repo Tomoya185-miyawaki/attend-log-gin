@@ -21,6 +21,16 @@ func (ec *EmployeeController) List(c *gin.Context) {
 	}
 }
 
+func (ec *EmployeeController) ListPagenate(c *gin.Context) {
+	var employeeListUseCase usecase.EmployeeListUseCase
+	response, isSuccess := employeeListUseCase.ExecPaginate(c)
+	if !isSuccess {
+		helper.Response(c, nil, response, http.StatusBadRequest)
+	} else {
+		helper.Response(c, response, nil, http.StatusOK)
+	}
+}
+
 func (ec *EmployeeController) Show(c *gin.Context) {
 	var employeeShowUseCase usecase.EmployeeShowUseCase
 	response, isSuccess := employeeShowUseCase.Exec(c)

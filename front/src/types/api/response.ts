@@ -16,14 +16,24 @@ export type PasswordResetResponse = {
   message: string
 }
 
+export type GetEmployees = {
+  statusCode: number,
+  employees: Employee[]
+}
+
 export type GetEmployeesByIdRes = {
   employee: Employee
 }
 
 export type GetEmployeesByPaginateRes = {
+  statusCode: number,
   currentPage: number
   employees: Employee[]
   lastPage: number
+}
+
+export type GetEmployeesRes = {
+  employees: Employee[]
 }
 
 export type CreateEmployeeRes = {

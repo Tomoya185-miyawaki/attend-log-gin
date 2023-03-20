@@ -4,6 +4,7 @@ import {
   LoginResponse,
   LogoutResponse,
   PasswordResetResponse,
+  GetEmployees,
   GetEmployeesByIdRes,
   GetEmployeesByPaginateRes,
   CreateEmployeeRes,
@@ -33,6 +34,11 @@ class ApiService {
 
   async getEmployeesByPaginate(page: number): Promise<GetEmployeesByPaginateRes> {
     const response = await http.get(`/api/employee?page=${page}`)
+    return response.data
+  }
+
+  async getEmployees(): Promise<GetEmployees> {
+    const response = await http.get(`/api/employees`)
     return response.data
   }
 

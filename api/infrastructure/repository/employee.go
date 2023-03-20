@@ -18,7 +18,17 @@ func NewEmployeeRepository() IDENT.EmployeeInterface {
 	return &employeeRepository{}
 }
 
-func (er *employeeRepository) FetchEmployees(
+func (er *employeeRepository) FetchEmployees() (*dto.Employees, error) {
+	db := db.GetDB()
+	employees := &dto.Employees{}
+
+	if err := db.Find(employees).Error; err != nil {
+		return nil, errors.New("従業員を取得できませんでした")
+	}
+	return employees, nil
+}
+
+func (er *employeeRepository) FetchEmployeesByPaginate(
 	page int,
 	limit int,
 	offset int,

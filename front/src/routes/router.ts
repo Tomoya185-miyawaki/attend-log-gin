@@ -5,6 +5,8 @@ import PasswordReset from '@/pages/admin/PasswordReset.vue'
 import EmployeeList from '@/pages/admin/employee/List.vue'
 import EmployeeCreate from '@/pages/admin/employee/Create.vue'
 import EmployeeEdit from '@/pages/admin/employee/Edit.vue'
+import EmployeeStampList from '@/pages/employee/stamp/List.vue'
+import EmployeeStampCreate from '@/pages/employee/stamp/Create.vue'
 import StampList from '@/pages/admin/stamp/List.vue'
 import StampEdit from '@/pages/admin/stamp/Edit.vue'
 import AdminErrorPage from '@/pages/admin/ErrorPage.vue'
@@ -50,8 +52,13 @@ const routes = [
   },
   {
     path: '/',
-    name: 'employeeStampCreate',
-    component: StampList,
+    name: 'employeeStampList',
+    component: EmployeeStampList,
+  },
+  {
+    path: '/:employeeId',
+    name: 'stampCreate',
+    component: EmployeeStampCreate,
   },
   {
     path: '/admin/stamp/:employeeId',
