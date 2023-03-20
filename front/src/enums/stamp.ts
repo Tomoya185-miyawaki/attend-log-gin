@@ -4,3 +4,8 @@ export enum StampStatus {
   RestEnd = 3,
   Leaving = 4
 }
+
+export enum StampAttendRestStatus {
+  AttendLeaving = 1,
+  Rest = 2
+}

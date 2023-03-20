@@ -56,6 +56,7 @@ import HeaderComponent from '@/components/layouts/admin/HeaderComponent.vue'
 import LoadingComponent from '@/components/parts/LoadingComponent.vue'
 import ApiService from '@/services/ApiService'
 import router from '@/routes/router'
+import { getFormatToday } from '@/util/date'
 
 export default defineComponent({
   name: 'StampListPage',
@@ -69,12 +70,8 @@ export default defineComponent({
     let lastPage = ref<number>(1)
     let stamps = ref<StampList[]>([])
     let employeeIds = ref<number[]>([])
-    const date = new Date()
-    const year = date.getFullYear()
-    const month = ('0' + (date.getMonth() + 1)).slice(-2)
-    const day = ('0' + (date.getDate())).slice(-2)
-    const today = `${year}-${month}-${day}`
-    const todayFormat = `${year}年${month}月${day}日`
+    const today = getFormatToday('-', '-')
+    const todayFormat = getFormatToday('年', '月', '日')
 
     const getStamps = async (today: string, page: number) => {
       isLoading.value = true
