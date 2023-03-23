@@ -102,8 +102,8 @@ func getAttendRestDate(stamps *dto.Stamps, employeeNameId map[uint]string) map[s
 	stampDate := entity.NewStampDate()
 	var attendDate time.Time    // 出勤時刻
 	var leavingDate time.Time   // 退勤時刻
-	var restStartDate time.Time //休憩開始時刻
-	var restEndDate time.Time   //休憩終了時刻
+	var restStartDate time.Time // 休憩開始時刻
+	var restEndDate time.Time   // 休憩終了時刻
 	var resStampsDate map[string]entity.StampDate = make(map[string]entity.StampDate)
 	for _, stamp := range *stamps {
 		if _, ok := employeeNameId[uint(stamp.EmployeeID)]; !ok {
@@ -149,6 +149,9 @@ func getAttendRestDate(stamps *dto.Stamps, employeeNameId map[uint]string) map[s
 				// 退勤時刻が設定されていない場合は労働時間を「-」で設定
 				stampDate.SetWorkingDate("-")
 			}
+			// 休憩時刻の設定がない場合
+		} else {
+			stampDate.SetRestDate("-")
 		}
 		if !stamp.StampEndDate.IsZero() {
 			var workingMinutes float64 // 労働時間（分）
