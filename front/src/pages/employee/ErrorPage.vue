@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import HeaderComponent from '@/components/layouts/admin/HeaderComponent.vue'
+import HeaderComponent from '@/components/layouts/employee/HeaderComponent.vue'
 
 export default defineComponent({
   name: 'EmployeeErrorPage',
