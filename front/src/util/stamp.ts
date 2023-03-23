@@ -27,14 +27,14 @@ export function getAttendRestStatus(stamps: StampsByEmployeeId[]) {
       if (stamps[i].status === StampAttendRestStatus.Rest && stamps[i].stamp_end_date !== '') {
         text = '休憩終了済み'
         buttonText = '退勤'
-        status = StampStatus.RestEnd
+        status = StampStatus.Leaving
         return [text, buttonText, status]
       }
       // 休憩開始している場合
       if (stamps[i].status === StampAttendRestStatus.Rest && stamps[i].stamp_start_date !== '') {
         text = '休憩開始済み'
         buttonText = '休憩終了'
-        status = StampStatus.Leaving
+        status = StampStatus.RestEnd
         return [text, buttonText, status]
       }
     }
