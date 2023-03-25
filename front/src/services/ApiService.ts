@@ -74,7 +74,7 @@ class ApiService {
   }
 
   async getStampDetail(employeeId: string): Promise<GetStampDetailRes> {
-    const response = await http.get(`/api/stamp/${employeeId}`)
+    const response = await http.get(`/api/stamps/${employeeId}`)
     return response.data
   }
 

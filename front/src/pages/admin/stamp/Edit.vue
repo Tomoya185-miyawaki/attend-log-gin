@@ -20,7 +20,7 @@ import interactionPlugin from '@fullcalendar/interaction'
 import HeaderComponent from '@/components/layouts/admin/HeaderComponent.vue'
 import LoadingComponent from '@/components/parts/LoadingComponent.vue'
 import ApiService from '@/services/ApiService'
-import { getTitle, getColor } from '@/util/fullCalendar'
+import { setEvent } from '@/util/fullCalendar'
 import { useRoute } from 'vue-router'
 import router from '@/routes/router'
 
@@ -59,18 +59,10 @@ export default defineComponent({
       await ApiService
         .getStampDetail(employeeId)
         .then(res => {
-          employeeName.value = res.employeeName
+          // employeeName.value = res.employeeName
           res.stamps.map(stamp => {
-            calendarOptions.value.events.push({
-                title: getTitle(stamp.status),
-                start: stamp.stamp_start_date,
-                end: stamp.stamp_end_date,
-                backgroundColor: getColor(stamp.status),
-                borderColor: getColor(stamp.status),
-                editable: true
-              })
+            calendarOptions.value.events.push(setEvent(stamp))
           })
-          isLoading.value = false
         })
         .catch(() => {
           isLoading.value = false
@@ -78,6 +70,20 @@ export default defineComponent({
         })
     }
     getStampDetail(employeeId)
+
+    const getEmployeeName = async (employeeId: string) => {
+      await ApiService
+        .getEmployeesById(employeeId)
+        .then(res => {
+          employeeName.value = res.employee.name
+          isLoading.value = false
+        })
+        .catch(() => {
+          isLoading.value = false
+          router.push({ name: 'adminError' })
+        })
+    }
+    getEmployeeName(employeeId)
 
     return {
       isLoading,
