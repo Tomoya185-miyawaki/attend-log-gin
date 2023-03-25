@@ -59,11 +59,10 @@ export default defineComponent({
       await ApiService
         .getStampDetail(employeeId)
         .then(res => {
-          employeeName.value = res.employeeName
+          // employeeName.value = res.employeeName
           res.stamps.map(stamp => {
             calendarOptions.value.events.push(setEvent(stamp))
           })
-          isLoading.value = false
         })
         .catch(() => {
           isLoading.value = false
@@ -71,6 +70,20 @@ export default defineComponent({
         })
     }
     getStampDetail(employeeId)
+
+    const getEmployeeName = async (employeeId: string) => {
+      await ApiService
+        .getEmployeesById(employeeId)
+        .then(res => {
+          employeeName.value = res.employee.name
+          isLoading.value = false
+        })
+        .catch(() => {
+          isLoading.value = false
+          router.push({ name: 'adminError' })
+        })
+    }
+    getEmployeeName(employeeId)
 
     return {
       isLoading,
