@@ -1,4 +1,4 @@
-import { StampStatus } from '@/enums/stamp'
+import { StampAttendRestStatus, StampStatus } from '@/enums/stamp'
 import { StampDetail } from '@/types/stamp'
 
 export function getTitle(status: StampStatus) {
@@ -17,6 +17,7 @@ export function getColor(status: StampStatus) {
 
 export function setEvent(stamp: StampDetail) {
   return {
+    id: stamp.id,
     title: getTitle(stamp.status),
     start: stamp.stamp_start_date,
     end: stamp.stamp_end_date,
@@ -24,4 +25,14 @@ export function setEvent(stamp: StampDetail) {
     borderColor: getColor(stamp.status),
     editable: true
   }
+}
+
+export function getStatusByTitle(title: string) {
+  if (title === '勤務') {
+    return StampAttendRestStatus.AttendLeaving
+  }
+  if (title === '休憩') {
+    return StampAttendRestStatus.Rest
+  }
+  return '';
 }

@@ -5,7 +5,8 @@ import {
   EmployeeFormData
 } from '@/types/auth'
 import {
-  CreateStampData
+  CreateStampData,
+  UpdateStampData
 } from '@/types/stamp'
 import {
   LoginResponse,
@@ -20,7 +21,8 @@ import {
   GetStampsByPaginateRes,
   GetStampsByEmployeeId,
   GetStampDetailRes,
-  CreateStampRes
+  CreateStampRes,
+  UpdateStampRes
 } from '@/types/api/response'
 
 class ApiService {
@@ -80,6 +82,10 @@ class ApiService {
 
   createStamp(apiData: CreateStampData): Promise<CreateStampRes> {
     return http.post('/api/stamp/create', apiData)
+  }
+
+  updateStamp(apiData: UpdateStampData): Promise<UpdateStampRes> {
+    return http.patch('/api/stamp/update', apiData)
   }
 }
 

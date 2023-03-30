@@ -18,6 +18,7 @@ export type StampsByEmployeeId = {
 }
 
 export type StampDetail = {
+  id: number
   status: StampStatus
   stamp_start_date: string
   stamp_end_date?: string
@@ -27,4 +28,11 @@ export type CreateStampData = {
   employeeId: number
   status: StampStatus
   today: string
+}
+
+export type UpdateStampData = {
+  id: number
+  status: StampAttendRestStatus
+  stamp_start_date: Date|null
+  stamp_end_date: Date|null
 }

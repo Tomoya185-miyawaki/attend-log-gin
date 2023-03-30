@@ -71,7 +71,24 @@ func (sr *stampRepository) Create(request *stamp.StampCreateRequest) error {
 	return nil
 }
 
-func (sr *stampRepository) Update(request *stamp.StampCreateRequest, checkStatus int) error {
+func (sr *stampRepository) Update(request *stamp.StampUpdateRequest) error {
+	db := db.GetDB()
+	stamp := &dto.Stamp{}
+
+	if err := db.Where("id = ?", request.Id).Find(&stamp).Error; err != nil {
+		log.Warn(err.Error())
+		return errors.New("出勤もしくは休憩開始が取得できませんでした")
+	}
+
+	stamp.StampStartDate = request.StampStartDate
+	stamp.StampEndDate = request.StampEndDate
+	if err := db.Save(&stamp).Error; err != nil {
+		return errors.New("従業員を更新できませんでした")
+	}
+	return nil
+}
+
+func (sr *stampRepository) UpdateStampEnd(request *stamp.StampCreateRequest, checkStatus int) error {
 	db := db.GetDB()
 	stamp := &dto.Stamp{}
 
