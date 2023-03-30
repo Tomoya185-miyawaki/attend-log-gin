@@ -72,3 +72,8 @@ export type CreateStampRes = {
   status: number
   message: string
 }
+
+export type UpdateStampRes = {
+  status: number
+  message: string
+}

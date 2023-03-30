@@ -56,7 +56,7 @@ export default defineComponent({
       },
       {
           key: 2,
-          title: '出退勤一覧',
+          title: '本日の出退勤',
           path: '/admin/stamp',
           icon: 'mdi-cube-unfolded'
       },

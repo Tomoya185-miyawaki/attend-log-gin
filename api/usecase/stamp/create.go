@@ -1,5 +1,5 @@
 /*
-出退勤一覧用のユースケース
+出退勤作成用のユースケース
 */
 package stamp
 
@@ -38,7 +38,7 @@ func (stampCreateUseCase *StampCreateUseCase) Exec(
 		} else {
 			checkStatus = int(dto.Rest)
 		}
-		err = repository.NewStampRepository().Update(request, checkStatus)
+		err = repository.NewStampRepository().UpdateStampEnd(request, checkStatus)
 	} else {
 		log.Warn("statusが不正です")
 		return &response.CreateStampResponse{StatusCode: http.StatusBadRequest, Message: "リクエストが不正です"}

@@ -17,6 +17,8 @@ type StampInterface interface {
 	FetchCount(today string) (*dto.StampCount, error)
 	// 出勤・休憩開始を登録する
 	Create(request *stamp.StampCreateRequest) error
+	// 出退勤を更新する
+	Update(request *stamp.StampUpdateRequest) error
 	// 退勤・休憩終了を登録する
-	Update(request *stamp.StampCreateRequest, checkStatus int) error
+	UpdateStampEnd(request *stamp.StampCreateRequest, checkStatus int) error
 }

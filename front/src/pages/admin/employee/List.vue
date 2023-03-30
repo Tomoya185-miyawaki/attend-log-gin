@@ -22,6 +22,9 @@
             <th class="text-left">
               時給
             </th>
+            <th class="text-left">
+              出退勤
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -34,6 +37,7 @@
             <td>{{ employee.id }}</td>
             <td>{{ employee.name }}</td>
             <td>{{ employee.hourly_wage }}円</td>
+            <td><v-btn @click.stop="moveStampEditPage(employee.id)">詳細へ</v-btn></td>
           </tr>
         </tbody>
       </v-table>
@@ -89,13 +93,18 @@ export default defineComponent({
       router.push({ name: 'employeeEdit', params: { employeeId: employeeId }})
     }
 
+    const moveStampEditPage = (employeeId: number) => {
+      router.push({ name: 'stampEdit', params: { employeeId: employeeId }})
+    }
+
     return {
       isLoading,
       currentPage,
       lastPage,
       employees,
       getEmployees,
-      moveEmployeeEditPage
+      moveEmployeeEditPage,
+      moveStampEditPage
     }
   }
 })

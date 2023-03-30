@@ -14,13 +14,14 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import '@fullcalendar/core/vdom'
-import FullCalendar from '@fullcalendar/vue3'
+import FullCalendar, { EventChangeArg, EventDropArg } from '@fullcalendar/vue3'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import HeaderComponent from '@/components/layouts/admin/HeaderComponent.vue'
 import LoadingComponent from '@/components/parts/LoadingComponent.vue'
 import ApiService from '@/services/ApiService'
-import { setEvent } from '@/util/fullCalendar'
+import { StampAttendRestStatus } from '@/enums/stamp'
+import { setEvent, getStatusByTitle } from '@/util/fullCalendar'
 import { useRoute } from 'vue-router'
 import router from '@/routes/router'
 
@@ -45,21 +46,24 @@ export default defineComponent({
       nowIndicator: true,
       locale: 'ja',
       allDaySlot: false,
-      // eventDrop: (info: EventChangeArg) => {
-      //   console.log("aa")
-      //   console.log(info.event._instance?.range.start)
-      // },
-      // eventResize: (info: EventDropArg) => {
-      //   console.log("bb")
-      //   console.log(info)
-      // }
+      eventDrop: async (info: EventChangeArg) => {
+        const status = getStatusByTitle(info.event.title)
+        if (status !== '') {
+          updateStamp(info, status)
+        }
+      },
+      eventResize: (info: EventDropArg) => {
+        const status = getStatusByTitle(info.event.title)
+        if (status !== '') {
+          updateStamp(info, status)
+        }
+      }
     }
 
     const getStampDetail = async (employeeId: string) => {
       await ApiService
         .getStampDetail(employeeId)
         .then(res => {
-          // employeeName.value = res.employeeName
           res.stamps.map(stamp => {
             calendarOptions.value.events.push(setEvent(stamp))
           })
@@ -84,6 +88,21 @@ export default defineComponent({
         })
     }
     getEmployeeName(employeeId)
+
+    const updateStamp = async (info: EventChangeArg | EventDropArg, status: StampAttendRestStatus) => { 
+      await ApiService
+        .updateStamp({
+          id: parseInt(info.event.id, 10),
+          status: status,
+          stamp_start_date: info.event.start,
+          stamp_end_date: info.event.end
+        })
+        .catch(() => {
+          alert('更新に失敗しました。少し待って再度お試しください')
+          calendarOptions.value.events = []
+          getStampDetail(employeeId)
+        })
+    }     
 
     return {
       isLoading,
