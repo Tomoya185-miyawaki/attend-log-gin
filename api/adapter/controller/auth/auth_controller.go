@@ -37,3 +37,14 @@ func (ac *AuthController) PasswordReset(c *gin.Context) {
 	response := adminPasswordResetUseCase.Exec(c, &request)
 	helper.Response(c, response, nil, response.StatusCode)
 }
+
+func (ac *AuthController) StampCreate(c *gin.Context) {
+	var request auth.StampCreateRequest
+	var stampCreateUseCase usecase.StampCreateUseCase
+	response := stampCreateUseCase.Exec(c, &request)
+	if response.StatusCode != http.StatusOK {
+		helper.Response(c, nil, response, response.StatusCode)
+	} else {
+		helper.Response(c, response, nil, response.StatusCode)
+	}
+}

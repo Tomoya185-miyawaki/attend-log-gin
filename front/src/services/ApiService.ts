@@ -6,7 +6,8 @@ import {
 } from '@/types/auth'
 import {
   CreateStampData,
-  UpdateStampData
+  UpdateStampData,
+  AdminCreateStampData
 } from '@/types/stamp'
 import {
   LoginResponse,
@@ -22,7 +23,8 @@ import {
   GetStampsByEmployeeId,
   GetStampDetailRes,
   CreateStampRes,
-  UpdateStampRes
+  UpdateStampRes,
+  AdminCreateStampRes
 } from '@/types/api/response'
 
 class ApiService {
@@ -86,6 +88,10 @@ class ApiService {
 
   updateStamp(apiData: UpdateStampData): Promise<UpdateStampRes> {
     return http.patch('/api/stamp/update', apiData)
+  }
+
+  adminCreateStamp(apiData: AdminCreateStampData): Promise<AdminCreateStampRes> {
+    return http.post('/api/admin/stamp/create', apiData)
   }
 }
 

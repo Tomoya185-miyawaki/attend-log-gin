@@ -36,3 +36,10 @@ export type UpdateStampData = {
   stamp_start_date: Date|null
   stamp_end_date: Date|null
 }
+
+export type AdminCreateStampData = {
+  employeeId: number
+  status: StampAttendRestStatus
+  stamp_start_date: Date
+  stamp_end_date: Date
+}
