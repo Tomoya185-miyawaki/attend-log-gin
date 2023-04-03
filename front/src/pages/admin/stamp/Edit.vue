@@ -6,6 +6,14 @@
       <FullCalendar 
         :options="calendarOptions"
       />
+      <DialogComponent
+        :isActive="isActive"
+        :startDate="startDate"
+        :endDate="endDate"
+        :employeeId="employeeId"
+        @changeActiveDialogFlg="isActive = $event"
+        @addAttendRest="reGetStampDetail(employeeId)"
+      />
     </v-container>
   </v-main>
   <LoadingComponent :isLoading="isLoading" />
@@ -14,10 +22,11 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import '@fullcalendar/core/vdom'
-import FullCalendar, { EventChangeArg, EventDropArg } from '@fullcalendar/vue3'
+import FullCalendar, { DateSelectArg, EventChangeArg, EventDropArg } from '@fullcalendar/vue3'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import HeaderComponent from '@/components/layouts/admin/HeaderComponent.vue'
+import DialogComponent from '@/components/parts/stamp/DialogComponent.vue'
 import LoadingComponent from '@/components/parts/LoadingComponent.vue'
 import ApiService from '@/services/ApiService'
 import { StampAttendRestStatus } from '@/enums/stamp'
@@ -30,11 +39,15 @@ export default defineComponent({
   components: {
     HeaderComponent,
     LoadingComponent,
+    DialogComponent,
     FullCalendar,
   },
   setup() {
     let isLoading = ref<boolean>(true)
+    let isActive = ref<boolean>(false)
     let employeeName = ref<string>('')
+    let startDate = ref<Date|undefined>(undefined)
+    let endDate = ref<Date|undefined>(undefined)
     let calendarOptions = ref<any>(null)
     const route = useRoute()
     const employeeId = route.params.employeeId as string
@@ -42,11 +55,22 @@ export default defineComponent({
     calendarOptions.value = {
       plugins: [ timeGridPlugin, interactionPlugin ],
       initialView: 'timeGridWeek',
+      headerToolbar: {
+        left: 'prev,next',
+        center: 'title',
+        right: 'timeGridWeek,timeGridDay'
+      },
       events: [],
       nowIndicator: true,
       locale: 'ja',
+      selectable: true,
       allDaySlot: false,
-      eventDrop: async (info: EventChangeArg) => {
+      select: (selectionInfo: DateSelectArg) => {
+        isActive.value = true
+        startDate.value = selectionInfo.start
+        endDate.value = selectionInfo.end
+      },
+      eventDrop: (info: EventChangeArg) => {
         const status = getStatusByTitle(info.event.title)
         if (status !== '') {
           updateStamp(info, status)
@@ -75,6 +99,11 @@ export default defineComponent({
     }
     getStampDetail(employeeId)
 
+    const reGetStampDetail = (employeeId: string) => {
+      calendarOptions.value.events = []
+      getStampDetail(employeeId)
+    }
+
     const getEmployeeName = async (employeeId: string) => {
       await ApiService
         .getEmployeesById(employeeId)
@@ -102,12 +131,17 @@ export default defineComponent({
           calendarOptions.value.events = []
           getStampDetail(employeeId)
         })
-    }     
+    }
 
     return {
       isLoading,
+      isActive,
+      startDate,
+      endDate,
+      employeeId,
       employeeName,
-      calendarOptions
+      calendarOptions,
+      reGetStampDetail,
     }
   }
 })
