@@ -24,6 +24,7 @@ import {
   GetStampDetailRes,
   CreateStampRes,
   UpdateStampRes,
+  DeleteStampRes,
   AdminCreateStampRes
 } from '@/types/api/response'
 
@@ -88,6 +89,10 @@ class ApiService {
 
   updateStamp(apiData: UpdateStampData): Promise<UpdateStampRes> {
     return http.patch('/api/stamp/update', apiData)
+  }
+
+  deleteStamp(id: number): Promise<DeleteStampRes> {
+    return http.delete(`/api/stamp/${id}`)
   }
 
   adminCreateStamp(apiData: AdminCreateStampData): Promise<AdminCreateStampRes> {

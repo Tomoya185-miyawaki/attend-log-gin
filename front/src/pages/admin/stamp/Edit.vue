@@ -8,11 +8,13 @@
       />
       <DialogComponent
         :isActive="isActive"
+        :dialogStatus="dialogStatus"
         :startDate="startDate"
         :endDate="endDate"
+        :stampId="stampId"
         :employeeId="employeeId"
         @changeActiveDialogFlg="isActive = $event"
-        @addAttendRest="reGetStampDetail(employeeId)"
+        @reGetStamp="reGetStampDetail(employeeId)"
       />
     </v-container>
   </v-main>
@@ -21,14 +23,14 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import '@fullcalendar/core/vdom'
-import FullCalendar, { DateSelectArg, EventChangeArg, EventDropArg } from '@fullcalendar/vue3'
+import FullCalendar, { EventClickArg, DateSelectArg, EventChangeArg, EventDropArg } from '@fullcalendar/vue3'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import HeaderComponent from '@/components/layouts/admin/HeaderComponent.vue'
 import DialogComponent from '@/components/parts/stamp/DialogComponent.vue'
 import LoadingComponent from '@/components/parts/LoadingComponent.vue'
 import ApiService from '@/services/ApiService'
+import { DialogStatus } from '@/enums/dialog'
 import { StampAttendRestStatus } from '@/enums/stamp'
 import { setEvent, getStatusByTitle } from '@/util/fullCalendar'
 import { useRoute } from 'vue-router'
@@ -45,9 +47,11 @@ export default defineComponent({
   setup() {
     let isLoading = ref<boolean>(true)
     let isActive = ref<boolean>(false)
+    let dialogStatus = ref<DialogStatus>(DialogStatus.Create)
     let employeeName = ref<string>('')
     let startDate = ref<Date|undefined>(undefined)
     let endDate = ref<Date|undefined>(undefined)
+    let stampId = ref<number|undefined>(undefined)
     let calendarOptions = ref<any>(null)
     const route = useRoute()
     const employeeId = route.params.employeeId as string
@@ -65,8 +69,14 @@ export default defineComponent({
       locale: 'ja',
       selectable: true,
       allDaySlot: false,
+      eventClick: (eventClickInfo: EventClickArg) => {
+        isActive.value = true
+        dialogStatus.value = DialogStatus.Delete
+        stampId.value = parseInt(eventClickInfo.event.id, 10)
+      },
       select: (selectionInfo: DateSelectArg) => {
         isActive.value = true
+        dialogStatus.value = DialogStatus.Create
         startDate.value = selectionInfo.start
         endDate.value = selectionInfo.end
       },
@@ -136,8 +146,10 @@ export default defineComponent({
     return {
       isLoading,
       isActive,
+      dialogStatus,
       startDate,
       endDate,
+      stampId,
       employeeId,
       employeeName,
       calendarOptions,

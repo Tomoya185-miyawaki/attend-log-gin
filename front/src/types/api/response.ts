@@ -78,6 +78,11 @@ export type UpdateStampRes = {
   message: string
 }
 
+export type DeleteStampRes = {
+  status: number
+  message: string
+}
+
 export type AdminCreateStampRes = {
   status: number
   message: string
