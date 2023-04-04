@@ -49,6 +49,7 @@ func Bind() *gin.Engine {
 			route.GET("/stamp", stampCtrl.List)                     // 出退勤一覧取得
 			route.POST("/admin/stamp/create", authCtrl.StampCreate) // 出退勤登録(管理画面からの登録)
 			route.PATCH("/stamp/update", stampCtrl.Update)          // 出退勤更新(管理画面からの更新)
+			route.DELETE("/stamp/:id", stampCtrl.Delete)            // 出退勤削除(管理画面からの更新)
 		}
 	}
 	return router

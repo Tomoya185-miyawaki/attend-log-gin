@@ -52,3 +52,13 @@ func (sc *StampController) Update(c *gin.Context) {
 		helper.Response(c, response, nil, response.StatusCode)
 	}
 }
+
+func (sc *StampController) Delete(c *gin.Context) {
+	var stampDeleteUseCase usecase.StampDeleteUseCase
+	response := stampDeleteUseCase.Exec(c)
+	if response.StatusCode != http.StatusOK {
+		helper.Response(c, nil, response, response.StatusCode)
+	} else {
+		helper.Response(c, response, nil, response.StatusCode)
+	}
+}

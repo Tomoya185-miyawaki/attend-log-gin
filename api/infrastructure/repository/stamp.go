@@ -116,3 +116,13 @@ func (sr *stampRepository) UpdateStampEnd(request *stamp.StampCreateRequest, che
 	}
 	return nil
 }
+
+func (sr *stampRepository) Delete(id string) error {
+	db := db.GetDB()
+	stamp := &dto.Stamp{}
+
+	if err := db.Delete(&stamp, id).Error; err != nil {
+		return errors.New("出退勤の削除に失敗しました")
+	}
+	return nil
+}
