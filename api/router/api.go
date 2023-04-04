@@ -40,15 +40,16 @@ func Bind() *gin.Engine {
 		// ログインが必要なルーティング
 		route.Use(middleware.AdminLoginCheck())
 		{
-			route.POST("/admin/logout", authCtrl.Logout)           // ログアウト
-			route.GET("/employee", employeeCtrl.ListPagenate)      // 従業員一覧取得(ページネーション付き)
-			route.GET("/employee/:id", employeeCtrl.Show)          // 従業員詳細
-			route.POST("/employee/create", employeeCtrl.Create)    // 従業員作成
-			route.PATCH("/employee/:id", employeeCtrl.Update)      // 従業員更新
-			route.DELETE("/employee/:id", employeeCtrl.Delete)     // 従業員削除
-			route.GET("/stamp", stampCtrl.List)                    // 出退勤一覧取得
-			route.POST("admin/stamp/create", authCtrl.StampCreate) // 出退勤登録(管理画面からの登録)
-			route.PATCH("/stamp/update", stampCtrl.Update)         // 出退勤更新(管理画面からの更新)
+			route.POST("/admin/logout", authCtrl.Logout)            // ログアウト
+			route.GET("/employee", employeeCtrl.ListPagenate)       // 従業員一覧取得(ページネーション付き)
+			route.GET("/employee/:id", employeeCtrl.Show)           // 従業員詳細
+			route.POST("/employee/create", employeeCtrl.Create)     // 従業員作成
+			route.PATCH("/employee/:id", employeeCtrl.Update)       // 従業員更新
+			route.DELETE("/employee/:id", employeeCtrl.Delete)      // 従業員削除
+			route.GET("/stamp", stampCtrl.List)                     // 出退勤一覧取得
+			route.POST("/admin/stamp/create", authCtrl.StampCreate) // 出退勤登録(管理画面からの登録)
+			route.PATCH("/stamp/update", stampCtrl.Update)          // 出退勤更新(管理画面からの更新)
+			route.DELETE("/stamp/:id", stampCtrl.Delete)            // 出退勤削除(管理画面からの更新)
 		}
 	}
 	return router

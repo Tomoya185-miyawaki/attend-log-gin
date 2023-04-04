@@ -24,4 +24,6 @@ type StampInterface interface {
 	Update(request *stamp.StampUpdateRequest) error
 	// 退勤・休憩終了を登録する
 	UpdateStampEnd(request *stamp.StampCreateRequest, checkStatus int) error
+	// 出退勤を削除する
+	Delete(id string) error
 }

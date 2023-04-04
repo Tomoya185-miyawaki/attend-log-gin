@@ -9,9 +9,12 @@
       <v-card width="300">
         <v-toolbar
           color="primary"
-          title="出退勤登録"
+          :title="dialog === DialogStatus.Create ? '出退勤登録' : '出退勤削除'"
         ></v-toolbar>
-        <v-card-text class="text-center justify-space-around">
+        <v-card-text
+          v-if="dialog === DialogStatus.Create"
+          class="text-center justify-space-around"
+        >
           <v-btn
             variant="flat"
             color="secondary"
@@ -36,11 +39,20 @@
             閉じる
           </v-btn>
           <v-btn
+            v-if="dialog === DialogStatus.Create"
             variant="text"
             color="primary"
             @click="attendRestRegister(status)"
           >
             登録
+          </v-btn>
+          <v-btn
+            v-else-if="dialog === DialogStatus.Delete"
+            variant="text"
+            color="error"
+            @click="attendRestDelete"
+          >
+            削除
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -50,14 +62,17 @@
 
 <script lang="ts">
 import { defineComponent, watch, ref, toRefs, SetupContext } from 'vue'
+import { DialogStatus } from '@/enums/dialog'
 import { StampAttendRestStatus } from '@/enums/stamp'
 import ApiService from '@/services/ApiService'
 
 type Props = {
   isActive: boolean
+  dialogStatus: DialogStatus
   startDate: Date|undefined
   endDate: Date|undefined
   employeeId: string
+  stampId: number|undefined
 }
 
 export default defineComponent({
@@ -66,6 +81,13 @@ export default defineComponent({
     isActive: {
       type: Boolean,
       default: false
+    },
+    dialogStatus: {
+      type: Number,
+      required: true,
+      validator(value: DialogStatus) {
+        return [DialogStatus.Create, DialogStatus.Delete].includes(value)
+      }
     },
     startDate: {
       type: Date,
@@ -80,15 +102,22 @@ export default defineComponent({
     employeeId: {
       type: String,
       required: true
+    },
+    stampId: {
+      type: Number,
+      required: false,
+      default: undefined
     }
   },
   setup(props: Props, context: SetupContext) {
-    const { isActive } = toRefs(props)
+    const { isActive, dialogStatus } = toRefs(props)
     let isActiveDialog = ref<boolean>(isActive.value)
+    let dialog = ref<DialogStatus>(dialogStatus.value)
     let status = ref<StampAttendRestStatus>(StampAttendRestStatus.AttendLeaving)
 
     watch(isActive, () => {
       isActiveDialog.value = isActive.value
+      dialog.value = dialogStatus.value
     })
     watch(isActiveDialog, () => {
       context.emit('changeActiveDialogFlg', isActiveDialog.value)
@@ -106,7 +135,7 @@ export default defineComponent({
             stamp_end_date: props.endDate as Date
           })
           .then(() => {
-            context.emit('addAttendRest', true)
+            context.emit('reGetStamp', true)
           })
           .catch(() => {
             alert('出退勤/休憩の登録に失敗しました')
@@ -115,11 +144,33 @@ export default defineComponent({
         alert('出退勤/休憩の登録に失敗しました')
       }
     }
+
+    const attendRestDelete = async () => {
+      isActiveDialog.value = false
+      if (props.stampId !== undefined) {
+        if (confirm('本当に削除しますか')) {
+          await ApiService
+            .deleteStamp(props.stampId)
+            .then(() => {
+              context.emit('reGetStamp', true)
+            })
+            .catch(() => {
+              alert('出退勤/休憩の削除に失敗しました')
+            })
+        }
+      } else {
+        alert('出退勤/休憩の削除に失敗しました')
+      }
+    }
+
     return {
       isActiveDialog,
+      dialog,
+      DialogStatus,
       status,
       StampAttendRestStatus,
       attendRestRegister,
+      attendRestDelete,
     }
   }
 })
